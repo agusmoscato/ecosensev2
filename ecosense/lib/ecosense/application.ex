@@ -11,6 +11,7 @@ defmodule Ecosense.Application do
       EcosenseWeb.Telemetry,
       Ecosense.Repo,
       Ecosense.InMemoryStore,
+      Ecosense.ReadingQueue,
       {Phoenix.PubSub, name: Ecosense.PubSub},
       # Start a worker by calling: Ecosense.Worker.start_link(arg)
       # {Ecosense.Worker, arg},
