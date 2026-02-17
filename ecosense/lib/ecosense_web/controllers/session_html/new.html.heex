@@ -1,10 +1,15 @@
 <div class="p-8">
   <div class="text-center mb-8">
-    <img src={~p"/images/ecosenselogo.png"} alt="Ecosense" class="h-50 mx-auto mb-4 ecosense-logo" />
+    <img
+      src={~p"/images/ecosenselogo.png"}
+      alt="Ecosense"
+      class="h-50 mx-auto mb-4 ecosense-logo"
+    />
     <h1 class="text-2xl font-bold ecosense-secondary">Bienvenido!</h1>
+    
     <p class="text-sm ecosense-secondary mt-1">Plataforma de monitoreo ambiental</p>
   </div>
-
+  
   <.form
     for={%{}}
     action={~p"/login"}
@@ -22,7 +27,7 @@
         autocomplete="username"
       />
     </div>
-
+    
     <div>
       <label class="block text-sm font-medium mb-2 ecosense-secondary">Contraseña</label>
       <div class="relative">
@@ -44,13 +49,12 @@
         </button>
       </div>
     </div>
-
+    
     <button type="submit" class="btn w-full ecosense-btn-primary mt-4">
-      <span class="material-symbols-outlined text-xl mr-2">login</span>
-      Iniciar sesión
+      <span class="material-symbols-outlined text-xl mr-2">login</span> Iniciar sesión
     </button>
   </.form>
-
+  
   <script>
     (function () {
       const input = document.getElementById("password-input");

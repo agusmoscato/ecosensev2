@@ -42,9 +42,39 @@ defmodule EcosenseWeb.SensorController do
 
         {:error, reason} ->
           Logger.error("Create sensor failed: #{inspect(reason)}")
+
           conn
           |> put_status(:unprocessable_entity)
           |> json(%{error: "No se pudo crear el sensor."})
+      end
+    else
+      conn
+      |> put_status(:service_unavailable)
+      |> json(%{error: "Base de datos no disponible."})
+    end
+  end
+
+  # PUT /api/sensors/:id — actualiza un sensor existente
+  def update(conn, %{"id" => id} = params) do
+    if repo_available?() do
+      case update_sensor_in_db(id, params) do
+        {:ok, sensor} ->
+          json(conn, sensor)
+
+        :not_found ->
+          conn
+          |> put_status(:not_found)
+          |> json(%{error: "Sensor no encontrado."})
+
+        {:error, reason} ->
+          Logger.error("Update sensor failed: #{inspect(reason)}")
+
+          conn
+          |> put_status(:unprocessable_entity)
+          |> json(%{
+            error: "No se pudo actualizar el sensor.",
+            reason: inspect(reason)
+          })
       end
     else
       conn
@@ -108,8 +138,21 @@ defmodule EcosenseWeb.SensorController do
     end
   end
 
+  defp fetch_sensor_by_id(id) do
+    query = "SELECT * FROM sensors WHERE id = ? AND deleted_at IS NULL"
+
+    case Repo.query(query, [id]) do
+      {:ok, %MyXQL.Result{columns: cols, rows: [row]}} ->
+        {:ok, cols |> Enum.zip(row) |> Map.new() |> normalize_row_for_json()}
+
+      _ ->
+        :not_found
+    end
+  end
+
   defp create_sensor_in_db(params) do
     type = params["type"] || params[:type]
+
     if type == nil or type == "" do
       {:error, :invalid}
     else
@@ -132,7 +175,13 @@ defmodule EcosenseWeb.SensorController do
                 {:ok, row_map}
 
               _ ->
-                {:ok, %{"description" => description, "node_id" => node_id, "type" => type, "unit" => unit}}
+                {:ok,
+                 %{
+                   "description" => description,
+                   "node_id" => node_id,
+                   "type" => type,
+                   "unit" => unit
+                 }}
             end
 
           {:error, reason} ->
@@ -146,10 +195,69 @@ defmodule EcosenseWeb.SensorController do
     end
   end
 
+  defp update_sensor_in_db(id_str, params) do
+    id = String.to_integer(id_str)
+
+    # Verificamos que el sensor exista (y no esté soft-deleted)
+    case fetch_sensor_by_id(id) do
+      :not_found ->
+        :not_found
+
+      {:ok, _existing} ->
+        type = params["type"] || params[:type]
+        description = params["description"] || params[:description]
+        node_id_raw = params["node_id"] || params[:node_id]
+        unit = params["unit"] || params[:unit]
+
+        node_id =
+          cond do
+            is_nil(node_id_raw) -> nil
+            is_binary(node_id_raw) -> String.to_integer(node_id_raw)
+            true -> node_id_raw
+          end
+
+        fields =
+          Enum.filter(
+            [
+              {"type", type},
+              {"description", description},
+              {"node_id", node_id},
+              {"unit", unit}
+            ],
+            fn {_k, v} -> v != nil end
+          )
+
+        if fields == [] do
+          {:error, :empty}
+        else
+          set_clause =
+            fields
+            |> Enum.map(fn {k, _} -> "#{k} = ?" end)
+            |> Enum.join(", ")
+
+          values = Enum.map(fields, fn {_, v} -> v end)
+
+          query = """
+          UPDATE sensors
+          SET #{set_clause}
+          WHERE id = ? AND deleted_at IS NULL
+          """
+
+          case Repo.query(query, values ++ [id]) do
+            {:ok, _} -> fetch_sensor_by_id(id)
+            {:error, reason} -> {:error, reason}
+          end
+        end
+    end
+  end
+
   defp soft_delete_sensor_in_db(id_str) do
     try do
       id = String.to_integer(id_str)
-      query = "UPDATE sensors SET deleted_at = CURRENT_TIMESTAMP WHERE id = ? AND deleted_at IS NULL"
+
+      query =
+        "UPDATE sensors SET deleted_at = CURRENT_TIMESTAMP WHERE id = ? AND deleted_at IS NULL"
+
       case Repo.query(query, [id]) do
         {:ok, %MyXQL.Result{num_rows: 1}} ->
           Logger.info("Sensor id=#{id} soft deleted")

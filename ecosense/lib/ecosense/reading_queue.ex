@@ -49,7 +49,10 @@ defmodule Ecosense.ReadingQueue do
       flush_timer_ref: ref
     }
 
-    Logger.info("ReadingQueue started (batch_size=#{batch_size}, flush_interval=#{flush_interval}ms)")
+    Logger.info(
+      "ReadingQueue started (batch_size=#{batch_size}, flush_interval=#{flush_interval}ms)"
+    )
+
     {:ok, state}
   end
 
@@ -109,7 +112,7 @@ defmodule Ecosense.ReadingQueue do
     end)
   end
 
-  defp flush_to_db(items, remaining_count \\ 0) do
+  defp flush_to_db(items, remaining_count) do
     try do
       Repo.transaction(fn ->
         node_ids = Enum.map(items, & &1["node_id"]) |> Enum.uniq() |> Enum.reject(&is_nil/1)
@@ -138,37 +141,48 @@ defmodule Ecosense.ReadingQueue do
 
         Enum.each(node_ids, fn node_id ->
           node_id_int = if is_binary(node_id), do: String.to_integer(node_id), else: node_id
-          case Repo.query("UPDATE nodes SET last_seen_at = CURRENT_TIMESTAMP WHERE id = ?", [node_id_int]) do
+
+          case Repo.query("UPDATE nodes SET last_seen_at = CURRENT_TIMESTAMP WHERE id = ?", [
+                 node_id_int
+               ]) do
             {:ok, _} -> :ok
             {:error, reason} -> raise "UPDATE last_seen failed: #{inspect(reason)}"
           end
         end)
       end)
 
-      Logger.info("ReadingQueue: ✓ #{length(items)} lecturas guardadas en BD | cola restante: #{remaining_count}")
+      Logger.info(
+        "ReadingQueue: ✓ #{length(items)} lecturas guardadas en BD | cola restante: #{remaining_count}"
+      )
     rescue
       e ->
-        Logger.error("ReadingQueue flush error: #{inspect(e)}, stacktrace: #{inspect(__STACKTRACE__)}")
+        Logger.error(
+          "ReadingQueue flush error: #{inspect(e)}, stacktrace: #{inspect(__STACKTRACE__)}"
+        )
     end
   end
 
   # MySQL DATETIME espera 'YYYY-MM-DD HH:MM:SS'. ISO8601 tiene 'T' y puede tener microsegundos.
   defp format_timestamp_for_mysql(nil), do: nil
+
   defp format_timestamp_for_mysql(%NaiveDateTime{} = dt) do
     NaiveDateTime.to_string(dt) |> String.replace("T", " ") |> String.slice(0..18)
   end
+
   defp format_timestamp_for_mysql(str) when is_binary(str) do
     str
     |> String.replace("T", " ")
     |> String.replace("Z", "")
     |> String.slice(0..18)
   end
+
   defp format_timestamp_for_mysql(_), do: nil
 
   defp cancel_timer(state) do
     if state.flush_timer_ref do
       Process.cancel_timer(state.flush_timer_ref)
     end
+
     %{state | flush_timer_ref: nil}
   end
 end

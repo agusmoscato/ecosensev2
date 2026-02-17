@@ -25,6 +25,7 @@ defmodule EcosenseWeb.DashboardApiController do
 
         {:error, reason} ->
           Logger.error("Dashboard API error: #{inspect(reason)}")
+
           conn
           |> put_status(:unprocessable_entity)
           |> json(%{error: "Error al cargar los datos del dashboard."})

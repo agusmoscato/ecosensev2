@@ -20,7 +20,9 @@ defmodule Ecosense.Processing do
   def validate(%{"value" => v}) when is_number(v) and v >= -100 and v <= 200, do: :ok
   def validate(%{"value" => _}), do: {:error, "valor fuera de rango"}
   def validate(%{"sensor_id" => _}), do: {:error, "falta el campo value"}
-  def validate(_), do: {:error, "parametros inválidos: se requiere sensor_id y value (o al menos value)"}
+
+  def validate(_),
+    do: {:error, "parametros inválidos: se requiere sensor_id y value (o al menos value)"}
 
   defp validate_value(v) when is_number(v) and v >= -100 and v <= 200, do: :ok
   defp validate_value(v) when is_binary(v), do: :ok
@@ -56,12 +58,14 @@ defmodule Ecosense.Processing do
   def check_alert(_, _), do: :ok
 
   defp parse_value(v) when is_number(v), do: v
+
   defp parse_value(v) when is_binary(v) do
     case Float.parse(v) do
       {n, _} -> n
       :error -> nil
     end
   end
+
   defp parse_value(_), do: nil
 
   defp check_alert_value(nil, _), do: :ok

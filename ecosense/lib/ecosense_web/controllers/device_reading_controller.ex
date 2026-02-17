@@ -28,6 +28,7 @@ defmodule EcosenseWeb.DeviceReadingController do
 
       {:error, reason} ->
         Logger.error("Device reading creation failed: #{inspect(reason)}")
+
         conn
         |> put_status(:unprocessable_entity)
         |> json(%{error: "No se pudo guardar la lectura"})
@@ -96,7 +97,9 @@ defmodule EcosenseWeb.DeviceReadingController do
           {:error, reason}
       end
     rescue
-      ArgumentError -> {:error, :not_found}
+      ArgumentError ->
+        {:error, :not_found}
+
       e ->
         Logger.error("Exception validating sensor: #{inspect(e)}")
         {:error, :not_found}
