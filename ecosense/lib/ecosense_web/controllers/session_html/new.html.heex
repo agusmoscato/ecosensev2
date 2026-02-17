@@ -25,19 +25,48 @@
 
     <div>
       <label class="block text-sm font-medium mb-2 ecosense-secondary">Contraseña</label>
-      <input
-        type="password"
-        name="user[password]"
-        required
-        placeholder="••••••••"
-        class="input input-bordered w-full"
-        autocomplete="current-password"
-      />
+      <div class="relative">
+        <input
+          id="password-input"
+          type="password"
+          name="user[password]"
+          required
+          placeholder="••••••••"
+          class="input input-bordered w-full pr-10"
+          autocomplete="current-password"
+        />
+        <button
+          type="button"
+          id="toggle-password"
+          class="absolute inset-y-0 right-0 flex items-center pr-3 text-base-content/60 hover:text-base-content"
+        >
+          <span class="material-symbols-outlined text-xl">visibility_off</span>
+        </button>
+      </div>
     </div>
 
-    <button type="submit" class="btn w-full ecosense-btn-primary">
+    <button type="submit" class="btn w-full ecosense-btn-primary mt-4">
       <span class="material-symbols-outlined text-xl mr-2">login</span>
       Iniciar sesión
     </button>
   </.form>
+
+  <script>
+    (function () {
+      const input = document.getElementById("password-input");
+      const toggle = document.getElementById("toggle-password");
+      if (!input || !toggle) return;
+
+      toggle.addEventListener("click", function () {
+        const icon = toggle.querySelector(".material-symbols-outlined");
+        if (input.type === "password") {
+          input.type = "text";
+          if (icon) icon.textContent = "visibility";
+        } else {
+          input.type = "password";
+          if (icon) icon.textContent = "visibility_off";
+        }
+      });
+    })();
+  </script>
 </div>
