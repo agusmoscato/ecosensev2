@@ -1,12 +1,63 @@
 <div style="font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif; min-height:100vh; background:linear-gradient(135deg,#f0f4f8,#ffffff,#e8eef4);">
 
-  <!-- NAVBAR -->
-  <div style="backdrop-filter: blur(20px); background: rgba(255,255,255,0.85); padding:18px 40px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,0,0,0.05); position:sticky; top:0; z-index:100;">
-    <h1 style="font-size:22px; font-weight:700; color:#00796b; display:flex; align-items:center; gap:6px;">📊 ECOSENSE <span style="font-size:14px; font-weight:500; color:#555;">DASHBOARD</span></h1>
-    <div style="display:flex; gap:12px;">
-      <a href={~p"/manage"} style="padding:6px 14px; border-radius:12px; background:#e0f7fa; color:#00796b; font-weight:600; text-decoration:none;">⚙️ Gestionar</a>
-      <a href={~p"/"} style="padding:6px 14px; border-radius:12px; background:#e0f7fa; color:#00796b; font-weight:600; text-decoration:none;">🏠 Home</a>
-    </div>
+      <!-- NAVBAR UNIFICADA -->
+<div style="
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.85);
+  padding:18px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+  position:sticky;
+  top:0;
+  z-index:100;
+">
+
+  <!-- Logo -->
+  <a href={~p"/"} style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+    <img src={~p"/images/ecosenselogo.png"} 
+         alt="Ecosense" 
+         style="height:40px;" />
+  </a>
+
+  <!-- Links -->
+  <div style="display:flex; gap:20px; align-items:center;">
+
+    <a href={~p"/"} style="
+      text-decoration:none;
+      font-weight:600;
+      color:#1f3c88;
+      padding:6px 14px;
+      border-radius:12px;
+      background:#e0e7ff;
+    ">
+      🏠 Home
+    </a>
+
+    <a href={~p"/dashboard"} style="
+      text-decoration:none;
+      font-weight:600;
+      color:#1f3c88;
+      padding:6px 14px;
+      border-radius:12px;
+      background:#e0e7ff;
+    ">
+      📊 Dashboard
+    </a>
+
+    <a href={~p"/manage"} style="
+      text-decoration:none;
+      font-weight:600;
+      color:#1f3c88;
+      padding:6px 14px;
+      border-radius:12px;
+      background:#e0e7ff;
+    ">
+      📡 Gestión
+    </a>
+      <span style="font-size:12px; color:#777;">v1.0</span>
+  </div>
   </div>
 
   <!-- MAIN CONTENT -->

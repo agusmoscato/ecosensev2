@@ -1,29 +1,40 @@
 <div style="font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif; min-height:100vh; background:#f5f7fa;">
 
-  <!-- NAVBAR -->
-  <div style="
-    backdrop-filter: blur(20px);
-    background: rgba(255,255,255,0.85);
-    padding:18px 40px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:1px solid rgba(0,0,0,0.05);
-    position:sticky;
-    top:0;
-    z-index:100;
-  ">
-    <div style="display:flex; align-items:center; gap:20px;">
-      <a href={~p"/manage"} style="
-        background:#e0e7ff;
-        color:#1f3c88;
-        padding:6px 14px;
-        border-radius:12px;
-        font-weight:600;
-        text-decoration:none;
-      ">← Atrás</a>
-      <h1 style="font-size:22px; font-weight:700; color:#1f3c88; margin:0;">📍 Gestión de Nodos</h1>
-    </div>
+    <!-- NAVBAR UNIFICADA -->
+<div style="
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.85);
+  padding:18px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid rgba(0,0,0,0.05);
+  position:sticky;
+  top:0;
+  z-index:100;
+">
+
+  <!-- Logo -->
+  <a href={~p"/"} style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+    <img src={~p"/images/ecosenselogo.png"} 
+         alt="Ecosense" 
+         style="height:40px;" />
+  </a>
+
+  <!-- Links -->
+  <div style="display:flex; gap:20px; align-items:center;">
+
+    <a href={~p"/"} style="
+      text-decoration:none;
+      font-weight:600;
+      color:#1f3c88;
+      padding:6px 14px;
+      border-radius:12px;
+      background:#e0e7ff;
+    ">
+      🏠 Home
+    </a>
+
     <a href={~p"/dashboard"} style="
       text-decoration:none;
       font-weight:600;
@@ -31,7 +42,22 @@
       padding:6px 14px;
       border-radius:12px;
       background:#e0e7ff;
-    ">📊 Dashboard</a>
+    ">
+      📊 Dashboard
+    </a>
+
+    <a href={~p"/manage"} style="
+      text-decoration:none;
+      font-weight:600;
+      color:#1f3c88;
+      padding:6px 14px;
+      border-radius:12px;
+      background:#e0e7ff;
+    ">
+      📡 Gestión
+    </a>
+      <span style="font-size:12px; color:#777;">v1.0</span>
+  </div>
   </div>
 
   <!-- MAIN CONTENT -->
@@ -141,9 +167,9 @@
           border:1px solid #ccc;
           font-size:14px;
         ">
-          <option value="online">🟢 En Línea (Online)</option>
-          <option value="offline">🔴 Fuera de Línea (Offline)</option>
-          <option value="maintenance">🟡 Mantenimiento</option>
+          <option value="activo">🟢 En Línea (Online)</option>
+          <option value="inactivo">🔴 Fuera de Línea (Offline)</option>
+          <option value="mantenimiento">🟡 Mantenimiento</option>
         </select>
       </div>
 
@@ -170,6 +196,76 @@
     </form>
   </dialog>
 
+  <!-- EDIT NODE MODAL -->
+<dialog id="editNodeModal" style="
+  border:none;
+  border-radius:20px;
+  width:90%;
+  max-width:400px;
+  padding:30px;
+  box-shadow:0 25px 60px rgba(0,0,0,0.25);
+">
+  <h3 style="font-weight:700; font-size:20px; margin-bottom:20px;">Editar Nodo</h3>
+
+  <form id="edit-node-form" style="display:flex; flex-direction:column; gap:16px;">
+    <input type="hidden" id="edit-node-id">
+
+    <div style="display:flex; flex-direction:column; gap:4px;">
+      <label style="font-weight:600;">Nombre del Nodo *</label>
+      <input type="text" id="edit-node-name" required style="
+        padding:10px 12px;
+        border-radius:12px;
+        border:1px solid #ccc;
+      "/>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:4px;">
+      <label style="font-weight:600;">Ubicación</label>
+      <input type="text" id="edit-node-location" style="
+        padding:10px 12px;
+        border-radius:12px;
+        border:1px solid #ccc;
+      "/>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:4px;">
+      <label style="font-weight:600;">Estado *</label>
+      <select id="edit-node-status" required style="
+        padding:10px 12px;
+        border-radius:12px;
+        border:1px solid #ccc;
+      ">
+        <option value="activo">🟢 En Línea (Online)</option>
+        <option value="inactivo">🔴 Fuera de Línea (Offline)</option>
+        <option value="mantenimiento">🟡 Mantenimiento</option>
+      </select>
+    </div>
+
+    <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:12px;">
+      <button type="button" id="close-edit-node-modal" style="
+        padding:10px 20px;
+        border-radius:14px;
+        border:none;
+        background:#ccc;
+        font-weight:600;
+        cursor:pointer;
+      ">Cancelar</button>
+
+      <button type="submit" style="
+        padding:10px 20px;
+        border-radius:14px;
+        border:none;
+        background:linear-gradient(90deg,#2e7d32,#38bdf8);
+        color:white;
+        font-weight:600;
+        cursor:pointer;
+      ">Guardar Cambios</button>
+    </div>
+
+  </form>
+</dialog>
+
+
 </div>
 
 <script>
@@ -194,7 +290,7 @@ async function loadNodes() {
     const nodes = await res.json();
     const tbody = document.getElementById('nodes-tbody');
     const empty = document.getElementById('empty-state');
-
+    console.log(nodes);
     if (!Array.isArray(nodes) || nodes.length === 0) {
       tbody.innerHTML = '';
       empty.style.display = 'block';
@@ -205,19 +301,47 @@ async function loadNodes() {
     tbody.innerHTML = nodes.map(n => `
       <tr style="transition:0.2s; cursor:pointer;">
         <td style="padding:12px; font-weight:600;">${n.name || 'N/A'}</td>
-        <td style="padding:12px; color:#555;">${n.location || '-'}</td>
+        <td style="padding:12px; color:#555;">${n.city || '-'}</td>
         <td style="padding:12px;">
-          <span style="padding:4px 10px; border-radius:12px; color:white; font-weight:600; background:${
-            n.status === 'online' ? '#2e7d32' :
-            n.status === 'offline' ? '#dc2626' : '#f59e0b'
-          }">
-            ${n.status === 'online' ? '🟢' : n.status === 'offline' ? '🔴' : '🟡'} ${n.status}
+          <span style="
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:6px 14px;
+            border-radius:999px;
+            font-size:13px;
+            font-weight:600;
+            border:1px solid ${
+              n.status === 'activo'  ? '#bbf7d0' :
+              n.status === 'inactivo' ? '#fecaca' : '#fde68a'
+            };
+            background:${
+              n.status === 'activo'  ? '#f0fdf4' :
+              n.status === 'inactivo' ? '#fef2f2' : '#fffbeb'
+            };
+            color:${
+              n.status === 'activo'  ? '#166534' :
+              n.status === 'inactivo' ? '#991b1b' : '#92400e'
+            };
+          ">
+            <span style="
+              width:8px;
+              height:8px;
+              border-radius:50%;
+              background:${
+                n.status === 'activo'  ? '#22c55e' :
+                n.status === 'inactivo' ? '#ef4444' : '#f59e0b'
+              };
+            "></span>
+            ${
+              n.status === 'activo'  ? 'En línea' :
+              n.status === 'inactivo' ? 'Fuera de línea' : 'Mantenimiento'
+            }
           </span>
         </td>
         <td style="padding:12px;"><span style="padding:4px 8px; border-radius:12px; border:1px solid #ccc;">${n.sensor_count || 0}</span></td>
         <td style="padding:12px; display:flex; gap:6px;">
-          <button onclick="editNode(${n.id})" style="padding:6px 12px; border-radius:12px; border:none; background:#e0e7ff; color:#1f3c88; font-weight:600; cursor:pointer;">✏️ Editar</button>
-          <button onclick="deleteNode(${n.id})" style="padding:6px 12px; border-radius:12px; border:none; background:#fef2f2; color:#dc2626; font-weight:600; cursor:pointer;">🗑️ Eliminar</button>
+          <button onclick="editNode(${n.id})" style="padding:6px 12px; border-radius:12px; border:none; background:#e0e7ff; color:#1f3c88; font-weight:600; cursor:pointer;">Editar</button>
         </td>
       </tr>
     `).join('');
@@ -233,12 +357,19 @@ document.getElementById('create-node-form').addEventListener('submit', async (e)
   const name = document.getElementById('node-name').value;
   const location = document.getElementById('node-location').value || null;
   const status = document.getElementById('node-status').value;
-
+  
+  const data = {
+      name : document.getElementById('node-name').value,
+      city : document.getElementById('node-location').value || null,
+      status : document.getElementById('node-status').value
+    };
+  
+  console.log(data);
   try {
     const res = await fetch('/api/nodes', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name,location,status})
+      body:  JSON.stringify(data)
     });
     if(res.ok){
       document.getElementById('create-node-form').reset();
@@ -259,22 +390,59 @@ document.getElementById('create-node-form').addEventListener('submit', async (e)
   }
 });
 
-function deleteNode(id){
-  if(confirm('¿Estás seguro de eliminar este nodo?')){
-    fetch(`/api/nodes/${id}`,{method:'DELETE'}).then(()=>{
-      loadNodes();
-      const alert = document.createElement('div');
-      alert.style.cssText = "position:fixed;bottom:20px;right:20px;padding:12px 20px;background:#f59e0b;color:white;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,0.2);font-weight:600;";
-      alert.textContent="ℹ️ Nodo eliminado correctamente";
-      document.body.appendChild(alert);
-      setTimeout(()=>alert.remove(),3000);
+function editNode(id) {
+  fetch(`/api/nodes`)
+    .then(r => r.json())
+    .then(nodes => {
+      const node = nodes.find(n => n.id === id);
+      if (!node) return alert("Nodo no encontrado");
+
+      document.getElementById("edit-node-id").value = id;
+      document.getElementById("edit-node-name").value = node.name;
+      document.getElementById("edit-node-location").value = node.city || "";
+      document.getElementById("edit-node-status").value = node.status;
+
+      document.getElementById("editNodeModal").showModal();
     });
-  }
 }
 
-function editNode(id){
-  alert('Edición de nodos en desarrollo');
-}
+document.getElementById("close-edit-node-modal")
+  .addEventListener("click", () => {
+    document.getElementById("editNodeModal").close();
+  });
+
+document.getElementById("edit-node-form")
+  .addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const id = document.getElementById("edit-node-id").value;
+    const data = {
+      name: document.getElementById("edit-node-name").value,
+      location: document.getElementById("edit-node-location").value,
+      status: document.getElementById("edit-node-status").value
+    };
+    console.log(data);
+    const res = await fetch(`/api/nodes/${id}`, {
+      method: "PUT",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify(data)
+    });
+
+    if (res.ok) {
+      document.getElementById("editNodeModal").close();
+      loadNodes();
+
+      const alert = document.createElement("div");
+      alert.style.cssText =
+        "position:fixed;bottom:20px;right:20px;padding:12px 20px;background:#2563eb;color:white;border-radius:14px;font-weight:600;";
+      alert.textContent = "✏️ Nodo actualizado correctamente";
+      document.body.appendChild(alert);
+      setTimeout(() => alert.remove(), 3000);
+    } else {
+      alert("Error al actualizar el nodo");
+    }
+  });
+
 
 // Load nodes initially
 loadNodes();
