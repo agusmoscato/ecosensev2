@@ -1,95 +1,131 @@
+<style>
+  /* ESTILOS REUTILIZADOS DEL ARCHIVO DE NODOS */
+  dialog::backdrop {
+    background: rgba(15, 23, 42, 0.65);
+    backdrop-filter: blur(6px);
+  }
+
+  .custom-modal {
+    border: none;
+    border-radius: 24px;
+    width: 95%;
+    max-width: 520px;
+    padding: 0;
+    background: linear-gradient(145deg, #ffffff, #f1f5f9);
+    box-shadow: 0 40px 100px rgba(0,0,0,0.25);
+    animation: modalFade 0.25s ease-out;
+    place-self: center;
+    color: black;
+  }
+
+  @keyframes modalFade {
+    from { opacity:0; transform: translateY(20px) scale(0.97); }
+    to { opacity:1; transform: translateY(0) scale(1); }
+  }
+
+  .modal-header {
+    padding: 24px 28px 0 28px;
+  }
+
+  .modal-body {
+    padding: 20px 28px 28px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .modal-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f3c88;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .input-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #334155;
+  }
+
+  .input-group input,
+  .input-group select,
+  .input-group textarea {
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1px solid #dbeafe;
+    background: #ffffff;
+    font-size: 14px;
+    transition: 0.2s;
+    color: black;
+  }
+
+  .input-group input:focus,
+  .input-group select:focus,
+  .input-group textarea:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56,189,248,0.2);
+  }
+
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .btn-cancel {
+    padding: 10px 18px;
+    border-radius: 14px;
+    border: none;
+    background: #e2e8f0;
+    font-weight: 600;
+    cursor: pointer;
+    color: black;
+  }
+
+  .btn-primary {
+    padding: 10px 18px;
+    border-radius: 14px;
+    border: none;
+    background: linear-gradient(90deg,#2e7d32,#38bdf8);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+</style>
+
 <div style="font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif; min-height:100vh; background:#f5f7fa;">
-
-    <!-- NAVBAR UNIFICADA -->
-<div style="
-  backdrop-filter: blur(20px);
-  background: rgba(255,255,255,0.85);
-  padding:18px 40px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid rgba(0,0,0,0.05);
-  position:sticky;
-  top:0;
-  z-index:100;
-">
-
-  <!-- Logo -->
-  <a href={~p"/"} style="display:flex; align-items:center; gap:12px; text-decoration:none;">
-    <img src={~p"/images/ecosenselogo.png"} 
-         alt="Ecosense" 
-         style="height:40px;" />
-  </a>
-
-  <!-- Links -->
-  <div style="display:flex; gap:20px; align-items:center;">
-
-    <a href={~p"/"} style="
-      text-decoration:none;
-      font-weight:600;
-      color:#1f3c88;
-      padding:6px 14px;
-      border-radius:12px;
-      background:#e0e7ff;
-    ">
-      🏠 Home
+  <div style="backdrop-filter: blur(20px); background: rgba(255,255,255,0.85); padding:18px 40px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(0,0,0,0.05); position:sticky; top:0; z-index:100;">
+    <a href={~p"/"} style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+      <img src={~p"/images/ecosenselogo.png"} alt="Ecosense" style="height:40px;" />
     </a>
-
-    <a href={~p"/dashboard"} style="
-      text-decoration:none;
-      font-weight:600;
-      color:#1f3c88;
-      padding:6px 14px;
-      border-radius:12px;
-      background:#e0e7ff;
-    ">
-      📊 Dashboard
-    </a>
-
-    <a href={~p"/manage"} style="
-      text-decoration:none;
-      font-weight:600;
-      color:#1f3c88;
-      padding:6px 14px;
-      border-radius:12px;
-      background:#e0e7ff;
-    ">
-      📡 Gestión
-    </a>
+    <div style="display:flex; gap:20px; align-items:center;">
+      <a href={~p"/"} style="text-decoration:none; font-weight:600; color:#1f3c88; padding:6px 14px; border-radius:12px; background:#e0e7ff;">🏠 Home</a>
+      <a href={~p"/dashboard"} style="text-decoration:none; font-weight:600; color:#1f3c88; padding:6px 14px; border-radius:12px; background:#e0e7ff;">📊 Dashboard</a>
+      <a href={~p"/manage"} style="text-decoration:none; font-weight:600; color:#1f3c88; padding:6px 14px; border-radius:12px; background:#e0e7ff;">📡 Gestión</a>
       <span style="font-size:12px; color:#777;">v1.0</span>
-  </div>
+    </div>
   </div>
 
-  <!-- MAIN -->
   <div style="max-width:1100px; margin:auto; padding:60px 20px;">
-
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:40px;">
       <div>
         <h2 style="font-size:28px; font-weight:700; color:#1f3c88; margin:0;">Tus Sensores</h2>
         <p style="color:#555; margin-top:6px;">Administra y visualiza lecturas en tiempo real</p>
       </div>
-
-      <button id="open-create-sensor-modal" style="
-        background:linear-gradient(90deg,#2e7d32,#38bdf8);
-        color:white;
-        padding:14px 28px;
-        border-radius:16px;
-        font-weight:600;
-        border:none;
-        cursor:pointer;
-        box-shadow:0 12px 30px rgba(0,0,0,0.15);
-      ">
+      <button id="open-create-sensor-modal" style="background:linear-gradient(90deg,#2e7d32,#38bdf8); color:white; padding:14px 28px; border-radius:16px; font-weight:600; border:none; cursor:pointer; box-shadow:0 12px 30px rgba(0,0,0,0.15);">
         + Nuevo Sensor
       </button>
     </div>
 
-    <!-- TABLE -->
-    <div style="
-      background:white;
-      border-radius:24px;
-      box-shadow:0 25px 60px rgba(0,0,0,0.08);
-      overflow:hidden;
-    ">
+    <div style="background:white; border-radius:24px; box-shadow:0 25px 60px rgba(0,0,0,0.08); overflow:hidden;">
       <table style="width:100%; border-collapse:collapse;">
         <thead style="background:#e0e7ff;">
           <tr>
@@ -97,82 +133,201 @@
             <th style="padding:16px; text-align:left; font-weight:600; color:#1f3c88;">Nodo</th>
             <th style="padding:16px; text-align:left; font-weight:600; color:#1f3c88;">Unidad</th>
             <th style="padding:16px; text-align:left; font-weight:600; color:#1f3c88;">Descripción</th>
-            <th style="padding:16px; text-align:left; font-weight:600; color:#1f3c88;"></th>
+            <th style="padding:16px; text-align:left; font-weight:600; color:#1f3c88;">Acciones</th>
           </tr>
         </thead>
         <tbody id="sensors-tbody">
           <tr>
-            <td colspan="6" style="text-align:center; padding:40px;">Cargando sensores...</td>
+            <td colspan="5" style="text-align:center; padding:40px; color: black;">Cargando sensores...</td>
           </tr>
         </tbody>
       </table>
     </div>
+
+    <dialog id="createSensorModal" class="custom-modal">
+      <div class="modal-header">
+        <div class="modal-title">Crear Nuevo Sensor</div>
+      </div>
+      <form id="create-sensor-form" class="modal-body">
+        <div class="input-group">
+          <label>Tipo *</label>
+          <input type="text" id="sensor-type" placeholder="ej: temperatura, humedad" required />
+        </div>
+
+        <div class="input-group">
+          <label>Nodo *</label>
+          <select id="sensor-node-id" required>
+            <option value="">Selecciona un nodo</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label>Unidad</label>
+          <input type="text" id="sensor-unit" placeholder="ej: °C, %, ppm" />
+        </div>
+
+        <div class="input-group">
+          <label>Descripción</label>
+          <textarea id="sensor-description" rows="3" placeholder="ej: Sensor de temperatura del invernadero"></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="close-create-sensor-modal" class="btn-cancel">Cancelar</button>
+          <button type="submit" class="btn-primary">Crear Sensor</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="editSensorModal" class="custom-modal">
+      <div class="modal-header">
+        <div class="modal-title">Editar Sensor</div>
+      </div>
+      <form id="edit-sensor-form" class="modal-body">
+        <input type="hidden" id="edit-sensor-id" />
+        <div class="input-group">
+          <label>Tipo *</label>
+          <input type="text" id="edit-sensor-type" required />
+        </div>
+
+        <div class="input-group">
+          <label>Nodo *</label>
+          <select id="edit-sensor-node-id" required>
+            <option value="">Selecciona un nodo</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label>Unidad</label>
+          <input type="text" id="edit-sensor-unit" />
+        </div>
+
+        <div class="input-group">
+          <label>Descripción</label>
+          <textarea id="edit-sensor-description" rows="3"></textarea>
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" id="close-edit-sensor-modal" class="btn-cancel">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </dialog>
   </div>
-
-  <!-- MODAL GRAFICO -->
-  <dialog id="chartModal" style="
-    border:none;
-    border-radius:20px;
-    width:90%;
-    max-width:800px;
-    padding:30px;
-    box-shadow:0 25px 60px rgba(0,0,0,0.3);
-  ">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h3 style="font-size:20px; font-weight:700;">Lecturas últimas 24h</h3>
-      <button onclick="closeChart()" style="background:none;border:none;font-size:18px;cursor:pointer;">✖</button>
-    </div>
-    <canvas id="sensorChart" style="margin-top:20px;"></canvas>
-  </dialog>
-
 </div>
 
-<!-- ChartJS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
-let allSensors = [];
-let allNodes = [];
-let chartInstance = null;
+  let allSensors = [];
+  let allNodes = [];
 
-async function loadNodes(){
-  const res = await fetch('/api/nodes');
-  allNodes = await res.json();
-}
-
-async function loadSensors(){
-  const res = await fetch('/api/sensors');
-  allSensors = await res.json();
-  renderSensors();
-}
-
-function renderSensors(){
-  const tbody = document.getElementById('sensors-tbody');
-
-  if(!allSensors.length){
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px;">No hay sensores</td></tr>`;
-    return;
+  async function loadNodes(){
+    const res = await fetch('/api/nodes');
+    allNodes = await res.json();
   }
 
-  tbody.innerHTML = allSensors.map(s=>{
-    const node = allNodes.find(n=>n.id==s.node_id);
-    return `
-      <tr style="border-bottom:1px solid #f0f0f0; color:black;">
-        <td style="padding:14px;font-weight:600;">${s.type}</td>
-        <td style="padding:14px;">${node?node.name:'-'}</td>
-        <td style="padding:14px;">${s.unit||'-'}</td>
-        <td style="padding:14px;color:#555;">${s.description||'-'}</td>
-        <td style="padding:14px; display:flex; gap:8px;">
-          <button style="padding:6px 12px;border-radius:12px;border:none;background:#e0e7ff;color:#1f3c88;font-weight:600;cursor:pointer;"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
+  async function loadSensors(){
+    const res = await fetch('/api/sensors');
+    allSensors = await res.json();
+    renderSensors();
+  }
 
-function closeChart(){
-  document.getElementById('chartModal').close();
-}
+  function renderSensors(){
+    const tbody = document.getElementById('sensors-tbody');
+    if(!allSensors.length){
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:40px; color:black;">No hay sensores</td></tr>`;
+      return;
+    }
 
-loadNodes().then(loadSensors);
+    tbody.innerHTML = allSensors.map(s=>{
+      const node = allNodes.find(n=>n.id==s.node_id);
+      return `
+        <tr style="border-bottom:1px solid #f0f0f0; color:black; transition: 0.2s;">
+          <td style="padding:14px;font-weight:600;">${s.type}</td>
+          <td style="padding:14px;">${node?node.name:'-'}</td>
+          <td style="padding:14px;">${s.unit||'-'}</td>
+          <td style="padding:14px;color:#555;">${s.description||'-'}</td>
+          <td style="padding:14px;">
+            <button onclick="editSensor(${s.id})" style="padding:6px 12px;border-radius:12px;border:none;background:#e0e7ff;color:#1f3c88;font-weight:600;cursor:pointer;">
+              <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
+            </button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function populateNodeSelect(selectId, selectedId){
+    const select = document.getElementById(selectId);
+    if(!select) return;
+    const options = ['<option value="">Selecciona un nodo</option>'].concat(
+      allNodes.map(n=>`<option value="${n.id}" ${n.id==selectedId?'selected':''}>${n.name}</option>`)
+    );
+    select.innerHTML = options.join('');
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    await loadNodes();
+    await loadSensors();
+
+    const createModal = document.getElementById('createSensorModal');
+    const editModal = document.getElementById('editSensorModal');
+
+    document.getElementById('open-create-sensor-modal').addEventListener('click', () => {
+      populateNodeSelect('sensor-node-id', null);
+      createModal.showModal();
+    });
+
+    document.getElementById('close-create-sensor-modal').addEventListener('click', () => createModal.close());
+    document.getElementById('close-edit-sensor-modal').addEventListener('click', () => editModal.close());
+
+    // Cerrar modales al hacer clic fuera (en el backdrop)
+    [createSensorModal, editModal].forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        const dialogDimensions = modal.getBoundingClientRect();
+        if (
+          e.clientX < dialogDimensions.left ||
+          e.clientX > dialogDimensions.right ||
+          e.clientY < dialogDimensions.top ||
+          e.clientY > dialogDimensions.bottom
+        ) {
+          modal.close();
+        }
+      });
+    });
+
+    // Crear sensor
+    document.getElementById('create-sensor-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = {
+        type: document.getElementById('sensor-type').value.trim(),
+        node_id: parseInt(document.getElementById('sensor-node-id').value, 10),
+        unit: document.getElementById('sensor-unit').value.trim(),
+        description: document.getElementById('sensor-description').value.trim()
+      };
+
+      const res = await fetch('/api/sensors', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        document.getElementById('create-sensor-form').reset();
+        createModal.close();
+        loadSensors();
+      }
+    });
+  });
+
+  window.editSensor = function(id) {
+    const sensor = allSensors.find(s => s.id == id);
+    if(!sensor) return;
+
+    document.getElementById('edit-sensor-id').value = id;
+    document.getElementById('edit-sensor-type').value = sensor.type;
+    document.getElementById('edit-sensor-unit').value = sensor.unit || "";
+    document.getElementById('edit-sensor-description').value = sensor.description || "";
+    populateNodeSelect('edit-sensor-node-id', sensor.node_id);
+    
+    document.getElementById('editSensorModal').showModal();
+  }
 </script>

@@ -105,7 +105,10 @@ defmodule EcosenseWeb.ReadingController do
   defp soft_delete_in_db(id_str) do
     try do
       id = String.to_integer(id_str)
-      query = "UPDATE readings SET deleted_at = CURRENT_TIMESTAMP WHERE id = ? AND deleted_at IS NULL"
+
+      query =
+        "UPDATE readings SET deleted_at = CURRENT_TIMESTAMP WHERE id = ? AND deleted_at IS NULL"
+
       case Repo.query(query, [id]) do
         {:ok, %MyXQL.Result{num_rows: 1}} ->
           Logger.info("Reading id=#{id} soft deleted")
@@ -119,11 +122,12 @@ defmodule EcosenseWeb.ReadingController do
           :not_found
       end
     rescue
-      ArgumentError -> :not_found
+      ArgumentError ->
+        :not_found
+
       e ->
         Logger.error("Exception in soft delete: #{inspect(e)}")
         :not_found
     end
   end
-
 end

@@ -1,7 +1,6 @@
 <div style="font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif; background:#f5f7fa; min-height:100vh;">
-
-    <!-- NAVBAR UNIFICADA -->
-<div style="
+  <!-- NAVBAR UNIFICADA -->
+  <div style="
   backdrop-filter: blur(20px);
   background: rgba(255,255,255,0.85);
   padding:18px 40px;
@@ -13,58 +12,60 @@
   top:0;
   z-index:100;
 ">
-
-  <!-- Logo -->
-  <a href={~p"/"} style="display:flex; align-items:center; gap:12px; text-decoration:none;">
-    <img src={~p"/images/ecosenselogo.png"} 
-         alt="Ecosense" 
-         style="height:40px;" />
-  </a>
-
-  <!-- Links -->
-  <div style="display:flex; gap:20px; align-items:center;">
-
-    <a href={~p"/"} style="
+    <!-- Logo -->
+    <a href={~p"/"} style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+      <img
+        src={~p"/images/ecosenselogo.png"}
+        alt="Ecosense"
+        style="height:40px;"
+      />
+    </a>
+    <!-- Links -->
+    <div style="display:flex; gap:20px; align-items:center;">
+      <a
+        href={~p"/"}
+        style="
       text-decoration:none;
       font-weight:600;
       color:#1f3c88;
       padding:6px 14px;
       border-radius:12px;
       background:#e0e7ff;
-    ">
-      🏠 Home
-    </a>
-
-    <a href={~p"/dashboard"} style="
+    "
+      >
+        🏠 Home
+      </a>
+      <a
+        href={~p"/dashboard"}
+        style="
       text-decoration:none;
       font-weight:600;
       color:#1f3c88;
       padding:6px 14px;
       border-radius:12px;
       background:#e0e7ff;
-    ">
-      📊 Dashboard
-    </a>
-
-    <a href={~p"/manage"} style="
+    "
+      >
+        📊 Dashboard
+      </a>
+      <a
+        href={~p"/manage"}
+        style="
       text-decoration:none;
       font-weight:600;
       color:#1f3c88;
       padding:6px 14px;
       border-radius:12px;
       background:#e0e7ff;
-    ">
-      📡 Gestión
-    </a>
-      <span style="font-size:12px; color:#777;">v1.0</span>
+    "
+      >
+        📡 Gestión
+      </a> <span style="font-size:12px; color:#777;">v1.0</span>
+    </div>
   </div>
-  </div>
-
-
   <!-- MAIN -->
   <div style="max-width:1200px; margin:auto; padding:80px 30px;">
-
-<!-- INFO PREMIUM -->
+    <!-- INFO PREMIUM -->
     <div style="
       background:linear-gradient(135deg,#1f3c88,#2e7d32);
       padding:40px;
@@ -74,13 +75,10 @@
       box-shadow:0 25px 60px rgba(0,0,0,0.15);
     ">
       <h3 style="margin-bottom:10px;">¡Bienvenido a ECOSENSE!</h3>
-      <p style="opacity:0.9;">
-        Plataforma profesional de monitoreo ambiental. 
-        Gestiona nodos y sensores para obtener métricas en tiempo real.
-      </p>
+      
+      <p style="opacity:0.9;">Plataforma profesional de monitoreo ambiental.
+        Gestiona nodos y sensores para obtener métricas en tiempo real.</p>
     </div>
-
-
     <!-- QUICK GUIDE -->
     <div style="
       background:white;
@@ -89,19 +87,28 @@
       box-shadow:0 30px 70px rgba(0,0,0,0.08);
     ">
       <h2 style="margin-bottom:30px;">🚀 Guía Rápida</h2>
-
+      
       <ol style="color:#555; line-height:1.8;">
-        <li><strong>Crea un nodo:</strong> Define un punto de monitoreo con ubicación específica.</li>
+        <li>
+          <strong>Crea un nodo:</strong> Define un punto de monitoreo con ubicación específica.
+        </li>
+        
         <li><strong>Añade sensores:</strong> Asigna temperatura, humedad, CO₂ y más.</li>
-        <li><strong>Monitorea en vivo:</strong> El dashboard captura automáticamente las lecturas.</li>
-        <li><strong>Analiza tendencias:</strong> Visualiza gráficos y toma decisiones basadas en datos.</li>
+        
+        <li>
+          <strong>Monitorea en vivo:</strong> El dashboard captura automáticamente las lecturas.
+        </li>
+        
+        <li>
+          <strong>Analiza tendencias:</strong>
+          Visualiza gráficos y toma decisiones basadas en datos.
+        </li>
       </ol>
-
+      
       <div style="margin-top:30px; font-size:13px; color:#777;">
         💡 Los nodos eliminados se archivan sin perder historial.
       </div>
     </div>
-
     <!-- ACTION CARDS -->
     <div style="
       display:grid;
@@ -110,9 +117,10 @@
       margin-bottom:80px;
       padding:40px;
     ">
-
       <!-- Nodos -->
-      <a href={~p"/manage/nodes"} style="
+      <a
+        href={~p"/manage/nodes"}
+        style="
         text-decoration:none;
         background:white;
         padding:40px;
@@ -120,58 +128,57 @@
         box-shadow:0 25px 60px rgba(0,0,0,0.08);
         transition:0.3s;
         display:block;
-      ">
+      "
+      >
         <div style="font-size:42px; margin-bottom:20px;">📍</div>
+        
         <h2 style="margin-bottom:10px; color:#1f3c88;">Gestionar Nodos</h2>
-        <p style="color:#555;">
-          Administra dispositivos de monitoreo ambiental distribuidos.
-        </p>
-        <div style="margin-top:25px; color:#2e7d32; font-weight:600;">
-          Nuevo →
-        </div>
+        
+        <p style="color:#555;">Administra dispositivos de monitoreo ambiental distribuidos.</p>
+        
+        <div style="margin-top:25px; color:#2e7d32; font-weight:600;">Nuevo →</div>
       </a>
-
       <!-- Sensores -->
-      <a href={~p"/manage/sensors"} style="
+      <a
+        href={~p"/manage/sensors"}
+        style="
         text-decoration:none;
         background:white;
         padding:40px;
         border-radius:24px;
         box-shadow:0 25px 60px rgba(0,0,0,0.08);
         display:block;
-      ">
+      "
+      >
         <div style="font-size:42px; margin-bottom:20px;">📡</div>
+        
         <h2 style="margin-bottom:10px; color:#38bdf8;">Gestionar Sensores</h2>
-        <p style="color:#555;">
-          Configura sensores de temperatura, humedad, CO₂ y más.
-        </p>
-        <div style="margin-top:25px; color:#2e7d32; font-weight:600;">
-          Nuevo →
-        </div>
+        
+        <p style="color:#555;">Configura sensores de temperatura, humedad, CO₂ y más.</p>
+        
+        <div style="margin-top:25px; color:#2e7d32; font-weight:600;">Nuevo →</div>
       </a>
-
       <!-- Registros -->
-      <a href={~p"/dashboard"} style="
+      <a
+        href={~p"/dashboard"}
+        style="
         text-decoration:none;
         background:white;
         padding:40px;
         border-radius:24px;
         box-shadow:0 25px 60px rgba(0,0,0,0.08);
         display:block;
-      ">
+      "
+      >
         <div style="font-size:42px; margin-bottom:20px;">📈</div>
+        
         <h2 style="margin-bottom:10px; color:#2e7d32;">Ver Registros</h2>
-        <p style="color:#555;">
-          Visualiza métricas en tiempo real y análisis avanzados.
-        </p>
-        <div style="margin-top:25px; color:#1f3c88; font-weight:600;">
-          Analizar →
-        </div>
+        
+        <p style="color:#555;">Visualiza métricas en tiempo real y análisis avanzados.</p>
+        
+        <div style="margin-top:25px; color:#1f3c88; font-weight:600;">Analizar →</div>
       </a>
-
     </div>
-
-
     <!-- STATS PREMIUM -->
     <div style="
       display:grid;
@@ -179,7 +186,6 @@
       gap:30px;
       margin-bottom:80px;
     ">
-
       <div style="
         background:white;
         padding:30px;
@@ -187,10 +193,12 @@
         box-shadow:0 15px 40px rgba(0,0,0,0.06);
       ">
         <div style="font-size:26px;">📍</div>
+        
         <div style="font-size:13px; color:#777;">Nodos Activos</div>
+        
         <div style="font-size:28px; font-weight:700; color:#1f3c88;" id="node-count">-</div>
       </div>
-
+      
       <div style="
         background:white;
         padding:30px;
@@ -198,10 +206,12 @@
         box-shadow:0 15px 40px rgba(0,0,0,0.06);
       ">
         <div style="font-size:26px;">📡</div>
+        
         <div style="font-size:13px; color:#777;">Sensores</div>
+        
         <div style="font-size:28px; font-weight:700; color:#38bdf8;" id="sensor-count">-</div>
       </div>
-
+      
       <div style="
         background:white;
         padding:30px;
@@ -209,10 +219,12 @@
         box-shadow:0 15px 40px rgba(0,0,0,0.06);
       ">
         <div style="font-size:26px;">✅</div>
+        
         <div style="font-size:13px; color:#777;">Registros Hoy</div>
+        
         <div style="font-size:28px; font-weight:700; color:#2e7d32;" id="reading-count">-</div>
       </div>
-
+      
       <div style="
         background:white;
         padding:30px;
@@ -220,42 +232,41 @@
         box-shadow:0 15px 40px rgba(0,0,0,0.06);
       ">
         <div style="font-size:26px;">⚡</div>
+        
         <div style="font-size:13px; color:#777;">Estado Sistema</div>
+        
         <div style="font-size:28px; font-weight:700; color:#f59e0b;" id="system-status">OK</div>
       </div>
-
     </div>
-    
   </div>
 </div>
 
-
 <script>
-document.addEventListener('DOMContentLoaded', async () => {
-  try {
-    // Obtener conteo de nodos
-    const nodesRes = await fetch('/api/nodes');
-    const nodes = await nodesRes.json();
-    document.getElementById('node-count').textContent = Array.isArray(nodes) ? nodes.length : 0;
+  document.addEventListener('DOMContentLoaded', async () => {
+    try {
+      // Obtener conteo de nodos
+      const nodesRes = await fetch('/api/nodes');
+      const nodes = await nodesRes.json();
+      document.getElementById('node-count').textContent = Array.isArray(nodes) ? nodes.length : 0;
 
-    // Obtener conteo de sensores
-    const sensorsRes = await fetch('/api/sensors');
-    const sensors = await sensorsRes.json();
-    document.getElementById('sensor-count').textContent = Array.isArray(sensors) ? sensors.length : 0;
+      // Obtener conteo de sensores
+      const sensorsRes = await fetch('/api/sensors');
+      const sensors = await sensorsRes.json();
+      document.getElementById('sensor-count').textContent = Array.isArray(sensors) ? sensors.length : 0;
 
-    // Obtener conteo de registros (últimas 24 horas)
-    const readingsRes = await fetch('/api/readings');
-    const readings = await readingsRes.json();
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const todayReadings = Array.isArray(readings) ? readings.filter(r => {
-      const readingDate = new Date(r.created_at);
-      readingDate.setHours(0, 0, 0, 0);
-      return readingDate.getTime() === today.getTime();
-    }).length : 0;
-    document.getElementById('reading-count').textContent = todayReadings;
-  } catch (error) {
-    console.error('Error loading stats:', error);
-  }
-});
+      // Obtener conteo de registros (últimas 24 horas)
+      const readingsRes = await fetch('/api/readings');
+      const readings = await readingsRes.json();
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const todayReadings = Array.isArray(readings) ? readings.filter(r => {
+        const readingDate = new Date(r.created_at);
+        readingDate.setHours(0, 0, 0, 0);
+        return readingDate.getTime() === today.getTime();
+      }).length : 0;
+      document.getElementById('reading-count').textContent = todayReadings;
+    } catch (error) {
+      console.error('Error loading stats:', error);
+    }
+  });
 </script>

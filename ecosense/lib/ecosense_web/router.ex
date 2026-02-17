@@ -49,10 +49,11 @@ defmodule EcosenseWeb.Router do
     pipe_through :api
 
     get "/dashboard", DashboardApiController, :show
+
     # Lecturas: solo GET, show, update, delete. Para CREAR desde dispositivos usar POST /api/devices/readings (requiere x-api-key)
     resources "/readings", ReadingController, only: [:index, :show, :update, :delete]
-    resources "/sensors", SensorController, only: [:index, :create, :delete]
-    resources "/nodes", NodeController, only: [:index, :create, :delete]
+    resources "/sensors", SensorController, only: [:index, :create, :update, :delete]
+    resources "/nodes", NodeController, only: [:index, :create, :update, :delete]
   end
 
   scope "/api/devices", EcosenseWeb do
@@ -60,7 +61,6 @@ defmodule EcosenseWeb.Router do
 
     post "/readings", DeviceReadingController, :create
   end
-
 
   # Other scopes may use custom stacks.
   # scope "/api", EcosenseWeb do

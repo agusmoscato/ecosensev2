@@ -48,10 +48,13 @@ defmodule EcosenseWeb.NodeController do
         {:error, :invalid_status} ->
           conn
           |> put_status(:bad_request)
-          |> json(%{error: "El campo status es requerido y debe ser: activo, inactivo o mantenimiento."})
+          |> json(%{
+            error: "El campo status es requerido y debe ser: activo, inactivo o mantenimiento."
+          })
 
         {:error, reason} ->
           Logger.error("Create node failed: #{inspect(reason)}")
+
           conn
           |> put_status(:unprocessable_entity)
           |> json(%{error: "No se pudo crear el nodo."})
@@ -79,9 +82,13 @@ defmodule EcosenseWeb.NodeController do
 
         {:error, reason} ->
           Logger.error("Update node failed: #{inspect(reason)}")
+
           conn
           |> put_status(:unprocessable_entity)
-          |> json(%{error: "No se pudo actualizar el nodo."})
+          |> json(%{
+            error: "No se pudo actualizar el nodo.",
+            reason: inspect(reason)
+          })
       end
     else
       conn
@@ -117,7 +124,8 @@ defmodule EcosenseWeb.NodeController do
 
   defp fetch_nodes_from_db do
     try do
-      query = "SELECT n.*, sensor_count FROM nodes n LEFT JOIN ( SELECT COUNT(id) as sensor_count, node_id FROM sensors GROUP BY node_id ) s ON n.id = s.node_id WHERE n.deleted_at IS NULL ORDER BY n.id"
+      query =
+        "SELECT n.*, sensor_count FROM nodes n LEFT JOIN ( SELECT COUNT(id) as sensor_count, node_id FROM sensors GROUP BY node_id ) s ON n.id = s.node_id WHERE n.deleted_at IS NULL ORDER BY n.id"
 
       case Repo.query(query) do
         {:ok, %MyXQL.Result{columns: cols, rows: rows}} ->
@@ -146,8 +154,12 @@ defmodule EcosenseWeb.NodeController do
     status = params["status"]
 
     cond do
-      name in [nil, ""] -> {:error, :invalid_name}
-      status not in @valid_statuses -> {:error, :invalid_status}
+      name in [nil, ""] ->
+        {:error, :invalid_name}
+
+      status not in @valid_statuses ->
+        {:error, :invalid_status}
+
       true ->
         try do
           api_key = generate_api_key()
@@ -164,59 +176,78 @@ defmodule EcosenseWeb.NodeController do
           """
 
           case Repo.query(query, [
-            name, address, city, latitude, longitude, status, notes, api_key
-          ]) do
+                 name,
+                 address,
+                 city,
+                 latitude,
+                 longitude,
+                 status,
+                 notes,
+                 api_key
+               ]) do
             {:ok, %{last_insert_id: new_id}} ->
               fetch_node_by_id(new_id)
 
             {:error, reason} ->
               {:error, reason}
           end
-        rescue e ->
-          {:error, e}
+        rescue
+          e ->
+            {:error, e}
         end
     end
   end
 
   defp update_node_in_db(id_str, params) do
     id = String.to_integer(id_str)
-    fields =
-      Enum.filter([
-        {"name", params["name"]},
-        {"address", params["address"]},
-        {"city", params["city"]},
-        {"latitude", normalize_float(params["latitude"])},
-        {"longitude", normalize_float(params["longitude"])},
-        {"status", params["status"]},
-        {"notes", params["notes"]}
-      ], fn {_k, v} -> v != nil end)
 
-    if fields == [] do
-      {:error, :empty}
-    else
-      set_clause =
-        fields
-        |> Enum.map(fn {k, _} -> "#{k} = ?" end)
-        |> Enum.join(", ")
+    # MySQL puede devolver 0 "filas afectadas" cuando los valores no cambian.
+    # Eso NO significa que el nodo no exista, así que chequeamos existencia aparte.
+    case fetch_node_by_id(id) do
+      :not_found ->
+        :not_found
 
-      values = Enum.map(fields, fn {_, v} -> v end)
+      {:ok, _existing} ->
+        fields =
+          Enum.filter(
+            [
+              {"name", params["name"]},
+              {"address", params["address"]},
+              {"city", params["city"]},
+              {"latitude", normalize_float(params["latitude"])},
+              {"longitude", normalize_float(params["longitude"])},
+              {"status", params["status"]},
+              {"notes", params["notes"]}
+            ],
+            fn {_k, v} -> v != nil end
+          )
 
-      query = """
-      UPDATE nodes
-      SET #{set_clause}, updated_at = NOW()
-      WHERE id = ? AND deleted_at IS NULL
-      """
+        if fields == [] do
+          {:error, :empty}
+        else
+          set_clause =
+            fields
+            |> Enum.map(fn {k, _} -> "#{k} = ?" end)
+            |> Enum.join(", ")
 
-      case Repo.query(query, values ++ [id]) do
-        {:ok, %{num_rows: 0}} -> :not_found
-        {:ok, _} -> fetch_node_by_id(id)
-        {:error, reason} -> {:error, reason}
-      end
+          values = Enum.map(fields, fn {_, v} -> v end)
+
+          query = """
+          UPDATE nodes
+          SET #{set_clause}
+          WHERE id = ? AND deleted_at IS NULL
+          """
+
+          case Repo.query(query, values ++ [id]) do
+            {:ok, _} -> fetch_node_by_id(id)
+            {:error, reason} -> {:error, reason}
+          end
+        end
     end
   end
 
   defp fetch_node_by_id(id) do
-    case Repo.query("SELECT * FROM nodes WHERE id = ?", [id]) do
+    case Repo.query("SELECT * FROM nodes WHERE id = ? AND deleted_at IS NULL", [id]) do
       {:ok, %MyXQL.Result{columns: cols, rows: [row]}} ->
         {:ok, cols |> Enum.zip(row) |> Map.new() |> normalize_row_for_json()}
 
@@ -244,7 +275,17 @@ defmodule EcosenseWeb.NodeController do
   # ================================
   defp normalize_float(nil), do: nil
   defp normalize_float(""), do: nil
-  defp normalize_float(v) when is_binary(v), do: String.to_float(v)
+
+  defp normalize_float(v) when is_binary(v) do
+    v = String.trim(v)
+
+    case Float.parse(v) do
+      {f, _rest} -> f
+      :error -> nil
+    end
+  end
+
+  defp normalize_float(v) when is_integer(v), do: v * 1.0
   defp normalize_float(v), do: v
 
   defp generate_api_key do

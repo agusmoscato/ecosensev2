@@ -1,7 +1,6 @@
 <div style="font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif; min-height:100vh; background:linear-gradient(135deg,#f0f4f8,#ffffff,#e8eef4);">
-
-      <!-- NAVBAR UNIFICADA -->
-<div style="
+  <!-- NAVBAR UNIFICADA -->
+  <div style="
   backdrop-filter: blur(20px);
   background: rgba(255,255,255,0.85);
   padding:18px 40px;
@@ -13,371 +12,437 @@
   top:0;
   z-index:100;
 ">
-
-  <!-- Logo -->
-  <a href={~p"/"} style="display:flex; align-items:center; gap:12px; text-decoration:none;">
-    <img src={~p"/images/ecosenselogo.png"} 
-         alt="Ecosense" 
-         style="height:40px;" />
-  </a>
-
-  <!-- Links -->
-  <div style="display:flex; gap:20px; align-items:center;">
-
-    <a href={~p"/"} style="
+    <!-- Logo -->
+    <a href={~p"/"} style="display:flex; align-items:center; gap:12px; text-decoration:none;">
+      <img
+        src={~p"/images/ecosenselogo.png"}
+        alt="Ecosense"
+        style="height:40px;"
+      />
+    </a>
+    <!-- Links -->
+    <div style="display:flex; gap:20px; align-items:center;">
+      <a
+        href={~p"/"}
+        style="
       text-decoration:none;
       font-weight:600;
       color:#1f3c88;
       padding:6px 14px;
       border-radius:12px;
       background:#e0e7ff;
-    ">
-      🏠 Home
-    </a>
-
-    <a href={~p"/dashboard"} style="
+    "
+      >
+        🏠 Home
+      </a>
+      <a
+        href={~p"/dashboard"}
+        style="
       text-decoration:none;
       font-weight:600;
       color:#1f3c88;
       padding:6px 14px;
       border-radius:12px;
       background:#e0e7ff;
-    ">
-      📊 Dashboard
-    </a>
-
-    <a href={~p"/manage"} style="
+    "
+      >
+        📊 Dashboard
+      </a>
+      <a
+        href={~p"/manage"}
+        style="
       text-decoration:none;
       font-weight:600;
       color:#1f3c88;
       padding:6px 14px;
       border-radius:12px;
       background:#e0e7ff;
-    ">
-      📡 Gestión
-    </a>
-      <span style="font-size:12px; color:#777;">v1.0</span>
+    "
+      >
+        📡 Gestión
+      </a> <span style="font-size:12px; color:#777;">v1.0</span>
+    </div>
   </div>
-  </div>
-
   <!-- MAIN CONTENT -->
   <div style="max-width:1000px; margin:auto; padding:60px 20px;">
-
     <!-- NODE SELECTION -->
     <div style="background:white; border-radius:24px; box-shadow:0 25px 60px rgba(0,0,0,0.08); overflow:hidden; margin-bottom:40px;">
       <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:24px; padding:24px; color:black; flex-direction: column;">
-
         <div style="flex:1; min-width:200px;">
-          <label style="font-weight:700; font-size:16px; color:#00796b;">Selecciona un Nodo</label>
-          <select id="node-select" style="margin-top:6px; padding:10px 14px; border-radius:12px; border:1px solid #ccc; width:100%; font-size:14px;">
+          <label style="font-weight:700; font-size:16px; color:#00796b;">
+            Selecciona un Nodo
+          </label>
+          <select
+            id="node-select"
+            style="margin-top:6px; padding:10px 14px; border-radius:12px; border:1px solid #ccc; width:100%; font-size:14px;"
+          >
             <option value="">-- Elige un nodo --</option>
           </select>
         </div>
-
         <!-- STATUS & COUNTERS -->
-        <div id="node-status-card" style="display:none; flex-direction:column; align-items:center; gap:6px; padding:16px 24px; background:#e0f7fa; border-radius:16px;">
-          <span id="node-status-badge" style="padding:6px 12px; border-radius:12px; font-weight:600;"></span>
+        <div
+          id="node-status-card"
+          style="display:none; flex-direction:column; align-items:center; gap:6px; padding:16px 24px; background:#e0f7fa; border-radius:16px;"
+        >
+          <span
+            id="node-status-badge"
+            style="padding:6px 12px; border-radius:12px; font-weight:600;"
+          >
+          </span>
           <p id="last-update" style="font-size:12px; color:#555;"></p>
-
+          
           <div id="node-info-card" style="display:flex; gap:16px; margin-top:12px;">
             <div style="text-align:center; padding:16px 24px; border-radius:16px; background:#e0f7fa; border:1px solid #cbd5e1;">
-              <p style="font-size:10px; font-weight:700; text-transform:uppercase; color:#555; margin-bottom:4px;">Sensores</p>
+              <p style="font-size:10px; font-weight:700; text-transform:uppercase; color:#555; margin-bottom:4px;">
+                Sensores
+              </p>
+              
               <p id="sensor-count" style="font-size:28px; font-weight:700; color:#00796b;">0</p>
             </div>
+            
             <div style="text-align:center; padding:16px 24px; border-radius:16px; background:#e0f7fa; border:1px solid #cbd5e1;">
-              <p style="font-size:10px; font-weight:700; text-transform:uppercase; color:#555; margin-bottom:4px;">Lecturas</p>
+              <p style="font-size:10px; font-weight:700; text-transform:uppercase; color:#555; margin-bottom:4px;">
+                Lecturas
+              </p>
+              
               <p id="reading-count" style="font-size:28px; font-weight:700; color:#00796b;">0</p>
             </div>
           </div>
-
           <!-- COLLAPSIBLE NODE INFO -->
-          <button id="toggle-node-info" style="margin-top:12px; padding:6px 14px; border-radius:12px; background:#00796b; color:white; font-weight:600; border:none; cursor:pointer;">+ Info</button>
-          <div id="node-full-info-card" style="display:none; background:#f0fdfa; border-radius:16px; padding:20px; margin-top:12px; box-shadow:0 10px 40px rgba(0,0,0,0.05); font-size:14px;">
+          <button
+            id="toggle-node-info"
+            style="margin-top:12px; padding:6px 14px; border-radius:12px; background:#00796b; color:white; font-weight:600; border:none; cursor:pointer;"
+          >
+            + Info
+          </button>
+          <div
+            id="node-full-info-card"
+            style="display:none; background:#f0fdfa; border-radius:16px; padding:20px; margin-top:12px; box-shadow:0 10px 40px rgba(0,0,0,0.05); font-size:14px;"
+          >
             <p><strong>Nombre:</strong> <span id="node-name"></span></p>
+            
             <p><strong>Ciudad:</strong> <span id="node-city"></span></p>
+            
             <p><strong>Dirección:</strong> <span id="node-address"></span></p>
+            
             <p><strong>Latitud / Longitud:</strong> <span id="node-coords"></span></p>
+            
             <p><strong>Notas:</strong> <span id="node-notes"></span></p>
-            <button id="export-excel" style="margin-top:10px; padding:6px 12px; background:#26c6da; color:white; font-weight:600; border-radius:12px; border:none; cursor:pointer;">📥 Exportar a Excel</button>
+            
+            <button
+              id="export-excel"
+              style="margin-top:10px; padding:6px 12px; background:#26c6da; color:white; font-weight:600; border-radius:12px; border:none; cursor:pointer;"
+            >
+              📥 Exportar a Excel
+            </button>
           </div>
         </div>
-
       </div>
     </div>
-
     <!-- FILTROS -->
-    <div id="filters" style="display:flex; gap:16px; margin-bottom:24px; flex-wrap:wrap; color:black;">
+    <div
+      id="filters"
+      style="display:flex; gap:16px; margin-bottom:24px; flex-wrap:wrap; color:black;"
+    >
       <div>
         <label style="font-weight:600; color:#00796b;">Desde:</label>
-        <input type="date" id="date-from" style="padding:6px 12px; border-radius:12px; border:1px solid #ccc; color:black;">
+        <input
+          type="date"
+          id="date-from"
+          style="padding:6px 12px; border-radius:12px; border:1px solid #ccc; color:black;"
+        />
       </div>
+      
       <div>
         <label style="font-weight:600; color:#00796b;">Hasta:</label>
-        <input type="date" id="date-to" style="padding:6px 12px; border-radius:12px; border:1px solid #ccc; color:black;">
+        <input
+          type="date"
+          id="date-to"
+          style="padding:6px 12px; border-radius:12px; border:1px solid #ccc; color:black;"
+        />
       </div>
+      
       <div>
         <label style="font-weight:600; color:#00796b;">Horas:</label>
-        <select id="hours-filter" style="padding:6px 12px; border-radius:12px; border:1px solid #ccc;">
+        <select
+          id="hours-filter"
+          style="padding:6px 12px; border-radius:12px; border:1px solid #ccc;"
+        >
           <option value="1">1h</option>
+          
           <option value="6">6h</option>
+          
           <option value="24">24h</option>
+          
           <option value="48" selected>48h</option>
+          
           <option value="0">Todo</option>
         </select>
       </div>
     </div>
-
     <!-- EMPTY STATE -->
     <div id="empty-state" style="text-align:center; padding:60px 20px; color:#555;">
       <h3 style="font-size:22px; font-weight:600; margin-bottom:12px;">Selecciona un Nodo</h3>
-      <p style="margin-bottom:16px;">Elige un nodo para ver los gráficos en tiempo real de sus sensores.</p>
-      <a href={~p"/manage/nodes"} style="padding:10px 20px; border-radius:16px; background:linear-gradient(90deg,#00796b,#26c6da); color:white; font-weight:600; text-decoration:none;">➕ Crear Primer Nodo</a>
+      
+      <p style="margin-bottom:16px;">
+        Elige un nodo para ver los gráficos en tiempo real de sus sensores.
+      </p>
+      
+      <a
+        href={~p"/manage/nodes"}
+        style="padding:10px 20px; border-radius:16px; background:linear-gradient(90deg,#00796b,#26c6da); color:white; font-weight:600; text-decoration:none;"
+      >
+        ➕ Crear Primer Nodo
+      </a>
     </div>
-
     <!-- LOADING STATE -->
     <div id="loading-state" style="display:none; text-align:center; padding:60px 20px;">
-      <span style="width:48px; height:48px; border:4px solid #cbd5e1; border-top-color:#00796b; border-radius:50%; display:inline-block; animation:spin 1s linear infinite;"></span>
-      <p style="margin-top:16px; color:#555; font-weight:600;">Cargando datos en tiempo real...</p>
+      <span style="width:48px; height:48px; border:4px solid #cbd5e1; border-top-color:#00796b; border-radius:50%; display:inline-block; animation:spin 1s linear infinite;">
+      </span>
+      <p style="margin-top:16px; color:#555; font-weight:600;">
+        Cargando datos en tiempo real...
+      </p>
     </div>
-
     <!-- CHARTS CONTAINER -->
-    <div id="charts-container" style="display:none; display:grid; gap:24px; grid-template-columns:1fr;">
+    <div
+      id="charts-container"
+      style="display:none; display:grid; gap:24px; grid-template-columns:1fr;"
+    >
       <!-- JS genera gráficos grandes aquí -->
     </div>
-
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js">
+</script>
 
 <script>
-(function(){
-  let chartInstances = [];
-  const nodeSelect = document.getElementById("node-select"),
-        chartsContainer = document.getElementById("charts-container"),
-        emptyState = document.getElementById("empty-state"),
-        nodeStatusCard = document.getElementById("node-status-card"),
-        nodeFullInfoCard = document.getElementById("node-full-info-card"),
-        nodeStatusBadge = document.getElementById("node-status-badge"),
-        lastUpdateEl = document.getElementById("last-update"),
-        sensorCountEl = document.getElementById("sensor-count"),
-        readingCountEl = document.getElementById("reading-count"),
-        nodeNameEl = document.getElementById("node-name"),
-        nodeCityEl = document.getElementById("node-city"),
-        nodeAddressEl = document.getElementById("node-address"),
-        nodeCoordsEl = document.getElementById("node-coords"),
-        nodeNotesEl = document.getElementById("node-notes"),
-        toggleInfoBtn = document.getElementById("toggle-node-info"),
-        exportExcelBtn = document.getElementById("export-excel"),
-        hoursFilter = document.getElementById("hours-filter");
-        dateFromFilter = document.getElementById("date-from"),
-        dateToFilter   = document.getElementById("date-to");
+  (function(){
+    let chartInstances = [];
+    const nodeSelect = document.getElementById("node-select"),
+          chartsContainer = document.getElementById("charts-container"),
+          emptyState = document.getElementById("empty-state"),
+          nodeStatusCard = document.getElementById("node-status-card"),
+          nodeFullInfoCard = document.getElementById("node-full-info-card"),
+          nodeStatusBadge = document.getElementById("node-status-badge"),
+          lastUpdateEl = document.getElementById("last-update"),
+          sensorCountEl = document.getElementById("sensor-count"),
+          readingCountEl = document.getElementById("reading-count"),
+          nodeNameEl = document.getElementById("node-name"),
+          nodeCityEl = document.getElementById("node-city"),
+          nodeAddressEl = document.getElementById("node-address"),
+          nodeCoordsEl = document.getElementById("node-coords"),
+          nodeNotesEl = document.getElementById("node-notes"),
+          toggleInfoBtn = document.getElementById("toggle-node-info"),
+          exportExcelBtn = document.getElementById("export-excel"),
+          hoursFilter = document.getElementById("hours-filter");
+          dateFromFilter = document.getElementById("date-from"),
+          dateToFilter   = document.getElementById("date-to");
 
-  toggleInfoBtn.addEventListener("click",()=>{ 
-    nodeFullInfoCard.style.display = nodeFullInfoCard.style.display==="none" ? "block":"none"; 
-    toggleInfoBtn.textContent = nodeFullInfoCard.style.display==="block"? "- Info": "+ Info";
-  });
+    toggleInfoBtn.addEventListener("click",()=>{ 
+      nodeFullInfoCard.style.display = nodeFullInfoCard.style.display==="none" ? "block":"none"; 
+      toggleInfoBtn.textContent = nodeFullInfoCard.style.display==="block"? "- Info": "+ Info";
+    });
 
-  function showEmpty(){ chartsContainer.style.display='none'; nodeStatusCard.style.display='none'; emptyState.style.display='block'; }
-  function showCharts(){ emptyState.style.display='none'; chartsContainer.style.display='grid'; nodeStatusCard.style.display='flex'; }
-  function mapStatus(status){ return status==='activo'?'online':status==='inactivo'?'offline':'maintenance'; }
+    function showEmpty(){ chartsContainer.style.display='none'; nodeStatusCard.style.display='none'; emptyState.style.display='block'; }
+    function showCharts(){ emptyState.style.display='none'; chartsContainer.style.display='grid'; nodeStatusCard.style.display='flex'; }
+    function mapStatus(status){ return status==='activo'?'online':status==='inactivo'?'offline':'maintenance'; }
 
-  function setNodeStatus(node){
-    if(!node) return;
-    const status = mapStatus(node.status), now = new Date(), lastSeen = node.last_seen_at?new Date(node.last_seen_at):null;
-    let statusText='', bgColor='', textColor='';
-    if(status==='online') { statusText='🟢 En Línea'; bgColor='#d1fae5'; textColor='#047857'; }
-    else if(status==='offline') { statusText='🔴 Fuera de Línea'; bgColor='#fee2e2'; textColor='#b91c1c'; }
-    else { statusText='🟡 Mantenimiento'; bgColor='#fef3c7'; textColor='#92400e'; }
-    if(status==='online' && lastSeen){
-      const diffH=(now-lastSeen)/1000/3600;
-      if(diffH>48){ statusText+=' ⚠️ REVISAR NODO'; bgColor='#fff4e5'; textColor='#b45309'; }
-    }
-    nodeStatusBadge.textContent=statusText;
-    nodeStatusBadge.style.background=bgColor;
-    nodeStatusBadge.style.color=textColor;
-    lastUpdateEl.textContent = lastSeen?'Última lectura: '+lastSeen.toLocaleString('es-ES'):'Sin lecturas';
-  }
-
-  function destroyCharts(){ chartInstances.forEach(c=>c.destroy()); chartInstances=[]; }
-
-  function applyFiltersToReadings(readings){
-    let filtered = readings.slice();
-
-    // FILTRO POR FECHA
-    const dateFrom = dateFromFilter.value ? new Date(dateFromFilter.value) : null;
-    const dateTo = dateToFilter.value ? new Date(dateToFilter.value + "T23:59:59") : null;
-    if(dateFrom) filtered = filtered.filter(r => new Date(r.timestamp) >= dateFrom);
-    if(dateTo) filtered = filtered.filter(r => new Date(r.timestamp) <= dateTo);
-
-    // FILTRO POR HORAS
-    const hours = Number(hoursFilter.value);
-    if(hours > 0){
-      const now = new Date();
-      const cutoff = new Date(now - hours*3600*1000);
-      filtered = filtered.filter(r => new Date(r.timestamp) >= cutoff);
-    }
-
-    return filtered;
-  }
-
-  function buildCharts(data){
-  window.dashboardData = data;
-  destroyCharts();
-  chartsContainer.innerHTML = "";
-
-  const { node, sensors, readings } = data;
-
-  // Aplicar todos los filtros
-  const filteredReadings = applyFiltersToReadings(readings);
-
-  if(!sensors || sensors.length === 0){
-    chartsContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#888;">No hay sensores asociados a este nodo.</div>';
-    chartsContainer.style.display = 'grid';
-    return;
-  }
-
-  // Contar solo sensores que tengan al menos una lectura filtrada
-  const sensorsWithReadings = sensors.filter(s => filteredReadings.some(r => r.sensor_id == s.id));
-
-  sensorCountEl.textContent = sensorsWithReadings.length;
-  readingCountEl.textContent = filteredReadings.length;
-
-  // Actualizar info del nodo
-  nodeNameEl.textContent = node.name;
-  nodeCityEl.textContent = node.city;
-  nodeAddressEl.textContent = node.address;
-  nodeCoordsEl.textContent = node.latitude + " / " + node.longitude;
-  nodeNotesEl.textContent = node.notes;
-
-  // Agrupar lecturas por sensor
-  const readingsBySensor = {};
-  sensors.forEach(s => readingsBySensor[s.id] = []);
-  (filteredReadings || []).forEach(r => {
-    if(readingsBySensor[r.sensor_id]) readingsBySensor[r.sensor_id].push(r);
-  });
-
-  // Iconos y colores por tipo de sensor
-  const sensorIcons = {
-    'temperatura': '🌡️',
-    'humedad_ambiental': '💧',
-    'velocidad_viento': '🌬️',
-    'precipitacion': '🌧️',
-    'default': '📡'
-  };
-  const colors = {
-    'temperatura': 'rgb(239,68,68)',
-    'humedad_ambiental': 'rgb(59,130,246)',
-    'velocidad_viento': 'rgb(14,165,233)',
-    'precipitacion': 'rgb(34,197,94)',
-    'default': 'rgb(59,130,246)'
-  };
-
-  // Crear gráficos por sensor
-  sensors.forEach(s => {
-    const list = (readingsBySensor[s.id] || []).slice().reverse();
-    const labels = list.map(r => r.timestamp ? r.timestamp.replace("Z","").slice(11,19) : "");
-    const values = list.map(r => Number(r.value));
-
-    const canvas = document.createElement("canvas"); 
-    canvas.height = 300;
-
-    const wrap = document.createElement("div");
-    wrap.style.cssText = "background:white;border-radius:24px;box-shadow:0 25px 60px rgba(0,0,0,0.08);padding:24px;border:1px solid #cbd5e1;margin-bottom:24px;";
-
-    const title = document.createElement("h3");
-    title.style.cssText = "font-weight:700;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:black;";
-    title.innerHTML = (sensorIcons[s.type] || sensorIcons.default) + ' ' + (s.description || s.type) + (s.unit ? ' (' + s.unit + ')' : '');
-    
-    wrap.appendChild(title); 
-    wrap.appendChild(canvas); 
-    chartsContainer.appendChild(wrap);
-
-    const ctx = canvas.getContext("2d"); 
-    const color = colors[s.type] || colors.default; 
-    const bgColor = color.replace('rgb','rgba').replace(')',' ,0.1)');
-
-    const chart = new Chart(ctx, {
-      type: "line",
-      data: {
-        labels,
-        datasets: [{
-          label: s.description || s.type,
-          data: values,
-          borderColor: color,
-          backgroundColor: bgColor,
-          fill: true,
-          tension: 0.3,
-          borderWidth: 2,
-          pointRadius: 3,
-          pointHoverRadius: 5,
-          pointBackgroundColor: color
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { display: true } },
-        scales: { y: { beginAtZero: false } }
+    function setNodeStatus(node){
+      if(!node) return;
+      const status = mapStatus(node.status), now = new Date(), lastSeen = node.last_seen_at?new Date(node.last_seen_at):null;
+      let statusText='', bgColor='', textColor='';
+      if(status==='online') { statusText='🟢 En Línea'; bgColor='#d1fae5'; textColor='#047857'; }
+      else if(status==='offline') { statusText='🔴 Fuera de Línea'; bgColor='#fee2e2'; textColor='#b91c1c'; }
+      else { statusText='🟡 Mantenimiento'; bgColor='#fef3c7'; textColor='#92400e'; }
+      if(status==='online' && lastSeen){
+        const diffH=(now-lastSeen)/1000/3600;
+        if(diffH>48){ statusText+=' ⚠️ REVISAR NODO'; bgColor='#fff4e5'; textColor='#b45309'; }
       }
-    });
+      nodeStatusBadge.textContent=statusText;
+      nodeStatusBadge.style.background=bgColor;
+      nodeStatusBadge.style.color=textColor;
+      lastUpdateEl.textContent = lastSeen?'Última lectura: '+lastSeen.toLocaleString('es-ES'):'Sin lecturas';
+    }
 
-    chartInstances.push(chart);
-  });
+    function destroyCharts(){ chartInstances.forEach(c=>c.destroy()); chartInstances=[]; }
 
-  showCharts();
+    function applyFiltersToReadings(readings){
+      let filtered = readings.slice();
 
-  // Exportar Excel respetando filtros
-  exportExcelBtn.onclick = () => {
-    if(!readings) return;
+      // FILTRO POR FECHA
+      const dateFrom = dateFromFilter.value ? new Date(dateFromFilter.value) : null;
+      const dateTo = dateToFilter.value ? new Date(dateToFilter.value + "T23:59:59") : null;
+      if(dateFrom) filtered = filtered.filter(r => new Date(r.timestamp) >= dateFrom);
+      if(dateTo) filtered = filtered.filter(r => new Date(r.timestamp) <= dateTo);
+
+      // FILTRO POR HORAS
+      const hours = Number(hoursFilter.value);
+      if(hours > 0){
+        const now = new Date();
+        const cutoff = new Date(now - hours*3600*1000);
+        filtered = filtered.filter(r => new Date(r.timestamp) >= cutoff);
+      }
+
+      return filtered;
+    }
+
+    function buildCharts(data){
+    window.dashboardData = data;
+    destroyCharts();
+    chartsContainer.innerHTML = "";
+
+    const { node, sensors, readings } = data;
+
+    // Aplicar todos los filtros
     const filteredReadings = applyFiltersToReadings(readings);
-    let csv = "Sensor,Timestamp,Value\n";
-    filteredReadings.forEach(r => {
-      const sensor = sensors.find(s => s.id === r.sensor_id);
-      csv += `"${sensor ? sensor.description : 'Desconocido'}","${r.timestamp}","${r.value}"\n`;
+
+    if(!sensors || sensors.length === 0){
+      chartsContainer.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:#888;">No hay sensores asociados a este nodo.</div>';
+      chartsContainer.style.display = 'grid';
+      return;
+    }
+
+    // Contar solo sensores que tengan al menos una lectura filtrada
+    const sensorsWithReadings = sensors.filter(s => filteredReadings.some(r => r.sensor_id == s.id));
+
+    sensorCountEl.textContent = sensorsWithReadings.length;
+    readingCountEl.textContent = filteredReadings.length;
+
+    // Actualizar info del nodo
+    nodeNameEl.textContent = node.name;
+    nodeCityEl.textContent = node.city;
+    nodeAddressEl.textContent = node.address;
+    nodeCoordsEl.textContent = node.latitude + " / " + node.longitude;
+    nodeNotesEl.textContent = node.notes;
+
+    // Agrupar lecturas por sensor
+    const readingsBySensor = {};
+    sensors.forEach(s => readingsBySensor[s.id] = []);
+    (filteredReadings || []).forEach(r => {
+      if(readingsBySensor[r.sensor_id]) readingsBySensor[r.sensor_id].push(r);
     });
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `nodo_${node.id}_lecturas.csv`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  };
-}
-  
 
-  async function loadNodes(){
-    try{
-      const res = await fetch("/api/nodes");
-      const nodes = await res.json();
-      nodeSelect.innerHTML="<option value=''>-- Elige un nodo --</option>"+(Array.isArray(nodes)?nodes:[]).map(n=>`<option value="${n.id}">${n.name} (${n.city}) ${n.status==='activo'?'🟢':n.status==='inactivo'?'🔴':'🟡'}</option>`).join("");
-    }catch(e){console.error("Error loading nodes", e);}
+    // Iconos y colores por tipo de sensor
+    const sensorIcons = {
+      'temperatura': '🌡️',
+      'humedad_ambiental': '💧',
+      'velocidad_viento': '🌬️',
+      'precipitacion': '🌧️',
+      'default': '📡'
+    };
+    const colors = {
+      'temperatura': 'rgb(239,68,68)',
+      'humedad_ambiental': 'rgb(59,130,246)',
+      'velocidad_viento': 'rgb(14,165,233)',
+      'precipitacion': 'rgb(34,197,94)',
+      'default': 'rgb(59,130,246)'
+    };
+
+    // Crear gráficos por sensor
+    sensors.forEach(s => {
+      const list = (readingsBySensor[s.id] || []).slice().reverse();
+      const labels = list.map(r => r.timestamp ? r.timestamp.replace("Z","").slice(11,19) : "");
+      const values = list.map(r => Number(r.value));
+
+      const canvas = document.createElement("canvas"); 
+      canvas.height = 300;
+
+      const wrap = document.createElement("div");
+      wrap.style.cssText = "background:white;border-radius:24px;box-shadow:0 25px 60px rgba(0,0,0,0.08);padding:24px;border:1px solid #cbd5e1;margin-bottom:24px;";
+
+      const title = document.createElement("h3");
+      title.style.cssText = "font-weight:700;font-size:18px;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:black;";
+      title.innerHTML = (sensorIcons[s.type] || sensorIcons.default) + ' ' + (s.description || s.type) + (s.unit ? ' (' + s.unit + ')' : '');
+      
+      wrap.appendChild(title); 
+      wrap.appendChild(canvas); 
+      chartsContainer.appendChild(wrap);
+
+      const ctx = canvas.getContext("2d"); 
+      const color = colors[s.type] || colors.default; 
+      const bgColor = color.replace('rgb','rgba').replace(')',' ,0.1)');
+
+      const chart = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: s.description || s.type,
+            data: values,
+            borderColor: color,
+            backgroundColor: bgColor,
+            fill: true,
+            tension: 0.3,
+            borderWidth: 2,
+            pointRadius: 3,
+            pointHoverRadius: 5,
+            pointBackgroundColor: color
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: true } },
+          scales: { y: { beginAtZero: false } }
+        }
+      });
+
+      chartInstances.push(chart);
+    });
+
+    showCharts();
+
+    // Exportar Excel respetando filtros
+    exportExcelBtn.onclick = () => {
+      if(!readings) return;
+      const filteredReadings = applyFiltersToReadings(readings);
+      let csv = "Sensor,Timestamp,Value\n";
+      filteredReadings.forEach(r => {
+        const sensor = sensors.find(s => s.id === r.sensor_id);
+        csv += `"${sensor ? sensor.description : 'Desconocido'}","${r.timestamp}","${r.value}"\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `nodo_${node.id}_lecturas.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    };
   }
+    
 
-  async function fetchDashboard(nodeId){
-    const res = await fetch("/api/dashboard?node_id="+encodeURIComponent(nodeId));
-    if(!res.ok) throw new Error(res.statusText);
-    return res.json();
-  }
+    async function loadNodes(){
+      try{
+        const res = await fetch("/api/nodes");
+        const nodes = await res.json();
+        nodeSelect.innerHTML="<option value=''>-- Elige un nodo --</option>"+(Array.isArray(nodes)?nodes:[]).map(n=>`<option value="${n.id}">${n.name} (${n.city}) ${n.status==='activo'?'🟢':n.status==='inactivo'?'🔴':'🟡'}</option>`).join("");
+      }catch(e){console.error("Error loading nodes", e);}
+    }
 
-  async function onNodeChange(){
-    const nodeId = nodeSelect.value;
-    if(!nodeId){ showEmpty(); destroyCharts(); return; }
-    try{
-      const data = await fetchDashboard(nodeId);
-      setNodeStatus(data.node);
-      buildCharts(data);
-    }catch(e){console.error("Dashboard error", e); showEmpty();}
-  }
+    async function fetchDashboard(nodeId){
+      const res = await fetch("/api/dashboard?node_id="+encodeURIComponent(nodeId));
+      if(!res.ok) throw new Error(res.statusText);
+      return res.json();
+    }
 
-  nodeSelect.addEventListener("change", onNodeChange);
-  hoursFilter.addEventListener("change", onNodeChange);
-  dateFromFilter.addEventListener("change", onNodeChange);
-  dateToFilter.addEventListener("change", onNodeChange);
+    async function onNodeChange(){
+      const nodeId = nodeSelect.value;
+      if(!nodeId){ showEmpty(); destroyCharts(); return; }
+      try{
+        const data = await fetchDashboard(nodeId);
+        setNodeStatus(data.node);
+        buildCharts(data);
+      }catch(e){console.error("Dashboard error", e); showEmpty();}
+    }
 
+    nodeSelect.addEventListener("change", onNodeChange);
+    hoursFilter.addEventListener("change", onNodeChange);
+    dateFromFilter.addEventListener("change", onNodeChange);
+    dateToFilter.addEventListener("change", onNodeChange);
 
-  loadNodes().then(()=>{ if(nodeSelect.value) onNodeChange(); else showEmpty(); });
+    loadNodes().then(()=>{ if(nodeSelect.value) onNodeChange(); else showEmpty(); });
 
-})();
+  })();
 </script>

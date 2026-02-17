@@ -39,31 +39,29 @@ defmodule Ecosense.MixProject do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
-  [
-    {:phoenix, "~> 1.8.0"},
-    {:phoenix_live_view, "~> 1.0"},
-    {:phoenix_ecto, "~> 4.6"},
-    {:ecto_sql, "~> 3.12"},
-    {:myxql, ">= 0.0.0"},
-    {:bandit, "~> 1.0"},
+    [
+      {:phoenix, "~> 1.8.0"},
+      {:phoenix_live_view, "~> 1.0"},
+      {:phoenix_ecto, "~> 4.6"},
+      {:ecto_sql, "~> 3.12"},
+      {:myxql, ">= 0.0.0"},
+      {:bandit, "~> 1.0"},
+      {:gettext, "~> 0.26"},
+      {:telemetry_metrics, "~> 1.1"},
+      {:telemetry_poller, "~> 1.0"},
+      {:phoenix_live_dashboard, "~> 0.8"},
+      {:swoosh, "~> 1.17"},
 
-    {:gettext, "~> 0.26"},
-    {:telemetry_metrics, "~> 1.1"},
-    {:telemetry_poller, "~> 1.0"},
-    {:phoenix_live_dashboard, "~> 0.8"},
-    {:swoosh, "~> 1.17"},
+      # 🔴 ESTAS 3 FALTABAN
+      {:esbuild, "~> 0.9", runtime: Mix.env() == :dev},
+      {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
+      {:phoenix_live_reload, "~> 1.5", only: :dev},
 
-    # 🔴 ESTAS 3 FALTABAN
-    {:esbuild, "~> 0.9", runtime: Mix.env() == :dev},
-    {:tailwind, "~> 0.2", runtime: Mix.env() == :dev},
-    {:phoenix_live_reload, "~> 1.5", only: :dev},
-
-    # Heroicons para el plugin de Tailwind (solo carpeta optimized; no es app Elixir)
-    {:heroicons, github: "tailwindlabs/heroicons", tag: "v2.2.0", sparse: "optimized", app: false}
-  ]
-end
-
-
+      # Heroicons para el plugin de Tailwind (solo carpeta optimized; no es app Elixir)
+      {:heroicons,
+       github: "tailwindlabs/heroicons", tag: "v2.2.0", sparse: "optimized", app: false}
+    ]
+  end
 
   # Aliases are shortcuts or tasks specific to the current project.
   # For example, to install project dependencies and perform other setup tasks, run:

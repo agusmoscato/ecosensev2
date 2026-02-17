@@ -21,6 +21,7 @@ defmodule EcosenseWeb.DeviceAuthPlug do
 
         {:error, :not_found} ->
           Logger.warning("DeviceAuthPlug: API key no encontrada en BD")
+
           conn
           |> put_status(:unauthorized)
           |> json(%{error: "Validación incorrecta: API key inválida o nodo no encontrado"})
@@ -28,6 +29,7 @@ defmodule EcosenseWeb.DeviceAuthPlug do
 
         {:error, reason} ->
           Logger.error("DeviceAuthPlug error: #{inspect(reason)}")
+
           conn
           |> put_status(:unauthorized)
           |> json(%{error: "Validación incorrecta: Error al verificar la API key"})
@@ -35,9 +37,12 @@ defmodule EcosenseWeb.DeviceAuthPlug do
       end
     else
       Logger.warning("DeviceAuthPlug: Header x-api-key faltante o vacío")
+
       conn
       |> put_status(:unauthorized)
-      |> json(%{error: "Validación incorrecta: Se requiere el header x-api-key con una API key válida"})
+      |> json(%{
+        error: "Validación incorrecta: Se requiere el header x-api-key con una API key válida"
+      })
       |> halt()
     end
   end
@@ -72,8 +77,8 @@ defmodule EcosenseWeb.DeviceAuthPlug do
       end
     rescue
       e ->
-      Logger.error("Exception in find_node_by_api_key: #{inspect(e)}")
-      {:error, e}
+        Logger.error("Exception in find_node_by_api_key: #{inspect(e)}")
+        {:error, e}
     end
   end
 
