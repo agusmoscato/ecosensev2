@@ -38,6 +38,7 @@ defmodule EcosenseWeb.Router do
 
     get "/", PageController, :home
     get "/dashboard", DashboardController, :index
+    get "/dashboard/history", DashboardController, :history
     get "/dashboard/:node_id", DashboardController, :show
 
     get "/manage", ManagementController, :index

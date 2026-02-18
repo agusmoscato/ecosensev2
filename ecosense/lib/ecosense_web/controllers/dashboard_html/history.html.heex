@@ -1,0 +1,471 @@
+<style>
+  .history-page { font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; background: var(--ecosense-primary-soft-1); }
+  .history-navbar {
+    backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, var(--ecosense-primary-soft-1) 0%, var(--ecosense-primary-soft-2) 100%);
+    padding: 30px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(30, 81, 89, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .history-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 20px 24px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(30, 81, 89, 0.08);
+  }
+  .history-select {
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(30, 81, 89, 0.2);
+    font-size: 14px;
+    color: var(--ecosense-secondary);
+    background: white;
+    min-width: 180px;
+  }
+  .history-select:focus { outline: none; border-color: var(--ecosense-primary); }
+  .history-range-btn {
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid rgba(30, 81, 89, 0.2);
+    background: white;
+    color: var(--ecosense-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .history-range-btn:hover { background: var(--ecosense-primary-soft-2); border-color: var(--ecosense-primary); }
+  .history-range-btn.active { background: var(--ecosense-primary); color: white; border-color: var(--ecosense-primary); }
+  .history-custom-row { display: flex; gap: 12px; align-items: center; }
+  .history-custom-row input { padding: 8px 12px; border-radius: 10px; border: 1px solid rgba(30, 81, 89, 0.2); font-size: 14px; }
+  .history-alert-banner {
+    padding: 14px 20px;
+    background: rgba(250, 202, 42, 0.2);
+    border: 1px solid var(--ecosense-alert);
+    border-radius: 12px;
+    color: var(--ecosense-secondary);
+    font-weight: 600;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .history-alert-banner.visible { display: block; }
+  .history-meta { font-size: 13px; color: var(--ecosense-secondary); opacity: 0.8; margin-bottom: 16px; }
+  .history-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .history-kpi-card {
+    padding: 16px 20px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(30, 81, 89, 0.08);
+    border: 1px solid rgba(30, 81, 89, 0.06);
+  }
+  .history-kpi-label { font-size: 12px; color: var(--ecosense-secondary); opacity: 0.8; margin-bottom: 4px; }
+  .history-kpi-value { font-size: 22px; font-weight: 700; color: var(--ecosense-secondary); }
+  .history-kpi-value.positive { color: var(--ecosense-positive); }
+  .history-kpi-value.negative { color: var(--ecosense-negative); }
+  .history-chart-wrap {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 24px rgba(30, 81, 89, 0.08);
+    margin-bottom: 24px;
+    min-height: 320px;
+  }
+  .history-chart-wrap canvas { max-height: 360px; }
+</style>
+
+<div class="history-page">
+  <!-- NAVBAR -->
+  <div class="history-navbar">
+    <a href={~p"/"} style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+      <img src={~p"/images/EcosenseLogo.png"} alt="Ecosense" style="height: 48px;" />
+    </a>
+    <div class="flex items-center gap-4">
+      <span style="font-size: 12px; color: var(--ecosense-secondary); opacity: 0.7;">v1.0</span>
+      <a href={~p"/dashboard"} style="background: var(--ecosense-tertiary); color: var(--ecosense-secondary); padding: 8px 18px; border-radius: 999px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+        <span class="material-symbols-outlined" style="font-size: 20px;">monitoring</span>
+        Dashboards
+      </a>
+      <a href={~p"/dashboard/history"} style="color: var(--ecosense-secondary); padding: 8px 12px; font-size: 14px; text-decoration: none; font-weight: 600;">Histórico</a>
+      <a href={~p"/manage/nodes"} style="color: var(--ecosense-secondary); padding: 8px 12px; font-size: 14px; text-decoration: none;">Nodos</a>
+      <a href={~p"/manage/sensors"} style="color: var(--ecosense-secondary); padding: 8px 12px; font-size: 14px; text-decoration: none;">Sensores</a>
+      <form action={~p"/logout"} method="post" style="margin: 0;">
+        <input type="hidden" name="_csrf_token" value={get_csrf_token()} />
+        <input type="hidden" name="_method" value="delete" />
+        <button type="submit" style="background: transparent; border: none; cursor: pointer; color: var(--ecosense-secondary); font-size: 14px; display: flex; align-items: center; gap: 6px;">
+          <span class="material-symbols-outlined" style="font-size: 20px;">logout</span>
+          Salir
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div style="max-width: 1400px; margin: 0 auto; padding: 40px 24px;">
+    <h1 style="font-size: 28px; font-weight: 700; color: var(--ecosense-secondary); margin: 0 0 8px 0;">Histórico</h1>
+    <p style="color: var(--ecosense-secondary); opacity: 0.85; margin-bottom: 24px;">Datos agregados por sensor con rango dinámico</p>
+
+    <!-- Filtros -->
+    <div class="history-filters">
+      <div>
+        <label style="font-size: 12px; color: var(--ecosense-secondary); opacity: 0.8;">Nodo</label>
+        <select id="history-node" class="history-select">
+          <option value="">Selecciona nodo</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size: 12px; color: var(--ecosense-secondary); opacity: 0.8;">Sensor</label>
+        <select id="history-sensor" class="history-select" disabled>
+          <option value="">Selecciona sensor</option>
+        </select>
+      </div>
+      <div>
+        <label style="font-size: 12px; color: var(--ecosense-secondary); opacity: 0.8;">Rango</label>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <button type="button" class="history-range-btn" data-range="1D">1D</button>
+          <button type="button" class="history-range-btn" data-range="5D">5D</button>
+          <button type="button" class="history-range-btn" data-range="1M">1M</button>
+          <button type="button" class="history-range-btn" data-range="3M">3M</button>
+          <button type="button" class="history-range-btn" data-range="1Y">1Y</button>
+          <button type="button" class="history-range-btn" id="history-range-custom" data-range="custom">Custom</button>
+        </div>
+      </div>
+      <div id="history-custom-dates" class="history-custom-row" style="display: none;">
+        <input type="datetime-local" id="history-from" />
+        <span style="color: var(--ecosense-secondary);">a</span>
+        <input type="datetime-local" id="history-to" />
+      </div>
+    </div>
+
+    <!-- Alerta nodo inactivo -->
+    <div id="history-inactive-banner" class="history-alert-banner">
+      Este nodo no reporta datos hace más de 3 días. Revisar estado.
+    </div>
+
+    <!-- Meta: última actualización -->
+    <div class="history-meta">
+      Última actualización: <span id="history-last-update">--:--:--</span>
+    </div>
+
+    <!-- KPIs -->
+    <div class="history-kpis">
+      <div class="history-kpi-card">
+        <div class="history-kpi-label">Valor actual</div>
+        <div class="history-kpi-value" id="kpi-current">-</div>
+      </div>
+      <div class="history-kpi-card">
+        <div class="history-kpi-label">Promedio</div>
+        <div class="history-kpi-value" id="kpi-average">-</div>
+      </div>
+      <div class="history-kpi-card">
+        <div class="history-kpi-label">Mínimo</div>
+        <div class="history-kpi-value" id="kpi-min">-</div>
+      </div>
+      <div class="history-kpi-card">
+        <div class="history-kpi-label">Máximo</div>
+        <div class="history-kpi-value" id="kpi-max">-</div>
+      </div>
+      <div class="history-kpi-card">
+        <div class="history-kpi-label">Variación vs promedio</div>
+        <div class="history-kpi-value" id="kpi-variation">-</div>
+      </div>
+    </div>
+
+    <!-- Gráfico -->
+    <div class="history-chart-wrap">
+      <canvas id="history-chart"></canvas>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function() {
+  const API_BASE = '/api';
+  const REFRESH_MS = 5000;
+  const INACTIVE_DAYS = 3;
+
+  let nodes = [];
+  let sensors = [];
+  let refreshTimer = null;
+  let chart = null;
+  let currentNodeId = null;
+
+  const state = {
+    nodeId: null,
+    sensorId: null,
+    range: '1D',
+    from: null,
+    to: null
+  };
+
+  function rangeToDates(range) {
+    const now = new Date();
+    let from = new Date(now);
+    switch (range) {
+      case '1D': from.setDate(from.getDate() - 1); break;
+      case '5D': from.setDate(from.getDate() - 5); break;
+      case '1M': from.setMonth(from.getMonth() - 1); break;
+      case '3M': from.setMonth(from.getMonth() - 3); break;
+      case '1Y': from.setFullYear(from.getFullYear() - 1); break;
+      default: return null;
+    }
+    return { from, to: now };
+  }
+
+  function toISO8601(d) {
+    return d.toISOString().slice(0, 19) + 'Z';
+  }
+
+  function formatTime(d) {
+    const h = String(d.getHours()).padStart(2, '0');
+    const m = String(d.getMinutes()).padStart(2, '0');
+    const s = String(d.getSeconds()).padStart(2, '0');
+    return h + ':' + m + ':' + s;
+  }
+
+  function canFetch() {
+    if (!state.nodeId || !state.sensorId) return false;
+    if (state.range === 'custom') {
+      return state.from && state.to && state.from < state.to;
+    }
+    return true;
+  }
+
+  function updateLastUpdate() {
+    document.getElementById('history-last-update').textContent = formatTime(new Date());
+  }
+
+  function showInactiveBanner(node) {
+    const banner = document.getElementById('history-inactive-banner');
+    const lastSeen = node && node.last_seen_at ? new Date(node.last_seen_at.replace('Z', '')) : null;
+    if (lastSeen && (Date.now() - lastSeen.getTime()) > INACTIVE_DAYS * 24 * 60 * 60 * 1000) {
+      banner.classList.add('visible');
+    } else {
+      banner.classList.remove('visible');
+    }
+  }
+
+  function hideInactiveBanner() {
+    document.getElementById('history-inactive-banner').classList.remove('visible');
+  }
+
+  function formatKpiValue(val, unit) {
+    if (val == null) return '-';
+    const u = unit || '';
+    return Number(val).toFixed(2) + (u ? ' ' + u : '');
+  }
+
+  function renderKPIs(resp, unit) {
+    const k = resp.kpis || {};
+    const current = k.current;
+    const average = k.average;
+    document.getElementById('kpi-current').textContent = formatKpiValue(current, unit);
+    document.getElementById('kpi-average').textContent = formatKpiValue(average, unit);
+    document.getElementById('kpi-min').textContent = formatKpiValue(k.min, unit);
+    document.getElementById('kpi-max').textContent = formatKpiValue(k.max, unit);
+
+    const varEl = document.getElementById('kpi-variation');
+    if (average != null && average !== 0 && current != null) {
+      const pct = ((current - average) / average) * 100;
+      varEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%';
+      varEl.className = 'history-kpi-value' + (pct > 0 ? ' positive' : pct < 0 ? ' negative' : '');
+    } else {
+      varEl.textContent = '-';
+      varEl.className = 'history-kpi-value';
+    }
+  }
+
+  function formatPeriodLabel(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return d.toLocaleDateString('es', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+  }
+
+  function updateChart(data, unit) {
+    const labels = (data || []).map(d => formatPeriodLabel(d.period));
+    const values = (data || []).map(d => d.value);
+
+    if (!chart) {
+      const ctx = document.getElementById('history-chart').getContext('2d');
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets: [{ label: unit || 'valor', data: values, borderColor: '#76c0dd', backgroundColor: 'rgba(118, 192, 221, 0.1)', fill: true, tension: 0.3 }] },
+        options: {
+          responsive: true,
+          maintainAspectRatio: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { grid: { color: 'rgba(30, 81, 89, 0.08)' }, ticks: { color: '#1e5159', maxTicksLimit: 12 } },
+            y: { grid: { color: 'rgba(30, 81, 89, 0.08)' }, ticks: { color: '#1e5159' } }
+          }
+        }
+      });
+    } else {
+      chart.data.labels = labels;
+      chart.data.datasets[0].data = values;
+      chart.data.datasets[0].label = unit || 'valor';
+      chart.update('none');
+    }
+  }
+
+  async function fetchHistory() {
+    if (!canFetch()) return;
+    let from, to;
+    if (state.range === 'custom') {
+      from = state.from;
+      to = state.to;
+    } else {
+      const r = rangeToDates(state.range);
+      if (!r) return;
+      from = r.from;
+      to = r.to;
+    }
+    const url = API_BASE + '/dashboard/history?node_id=' + encodeURIComponent(state.nodeId) + '&sensor_id=' + encodeURIComponent(state.sensorId) + '&from=' + encodeURIComponent(toISO8601(from)) + '&to=' + encodeURIComponent(toISO8601(to));
+    try {
+      const res = await fetch(url);
+      if (!res.ok) return;
+      const json = await res.json();
+      const unit = (json.sensor && json.sensor.unit) || '';
+      renderKPIs(json, unit);
+      updateChart(json.data || [], unit);
+      if (json.node) showInactiveBanner(json.node);
+      updateLastUpdate();
+    } catch (e) {
+      console.error('History fetch error', e);
+    }
+  }
+
+  function clearRefreshTimer() {
+    if (refreshTimer) {
+      clearInterval(refreshTimer);
+      refreshTimer = null;
+    }
+  }
+
+  function startRefresh() {
+    clearRefreshTimer();
+    if (state.nodeId && state.sensorId) {
+      refreshTimer = setInterval(fetchHistory, REFRESH_MS);
+    }
+  }
+
+  async function loadNodes() {
+    try {
+      const r = await fetch(API_BASE + '/nodes');
+      nodes = await r.json();
+      const sel = document.getElementById('history-node');
+      sel.innerHTML = '<option value="">Selecciona nodo</option>' + (nodes || []).map(n => '<option value="' + n.id + '">' + (n.name || 'Nodo ' + n.id) + '</option>').join('');
+    } catch (e) {
+      console.error('Load nodes error', e);
+    }
+  }
+
+  async function loadSensors() {
+    try {
+      const r = await fetch(API_BASE + '/sensors');
+      sensors = await r.json();
+      populateSensorSelect();
+    } catch (e) {
+      console.error('Load sensors error', e);
+    }
+  }
+
+  function populateSensorSelect() {
+    const sel = document.getElementById('history-sensor');
+    const nodeId = state.nodeId ? String(state.nodeId) : null;
+    const filtered = (sensors || []).filter(s => String(s.node_id) === nodeId);
+    sel.disabled = !nodeId;
+    sel.innerHTML = '<option value="">Selecciona sensor</option>' + filtered.map(s => '<option value="' + s.id + '">' + (s.type || 'Sensor ' + s.id) + (s.unit ? ' (' + s.unit + ')' : '') + '</option>').join('');
+    if (state.sensorId && filtered.some(s => String(s.id) === String(state.sensorId))) {
+      sel.value = state.sensorId;
+    } else {
+      state.sensorId = null;
+    }
+  }
+
+  function onNodeChange() {
+    const v = document.getElementById('history-node').value;
+    state.nodeId = v ? parseInt(v, 10) : null;
+    currentNodeId = state.nodeId;
+    state.sensorId = null;
+    populateSensorSelect();
+    hideInactiveBanner();
+    clearRefreshTimer();
+    if (state.nodeId) fetchHistory();
+    startRefresh();
+  }
+
+  function onSensorChange() {
+    const v = document.getElementById('history-sensor').value;
+    state.sensorId = v ? parseInt(v, 10) : null;
+    clearRefreshTimer();
+    if (state.sensorId) fetchHistory();
+    startRefresh();
+  }
+
+  function onRangeClick(btn) {
+    document.querySelectorAll('.history-range-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.range = btn.dataset.range;
+    document.getElementById('history-custom-dates').style.display = state.range === 'custom' ? 'flex' : 'none';
+    if (state.range === 'custom') {
+      const now = new Date();
+      const weekAgo = new Date(now);
+      weekAgo.setDate(weekAgo.getDate() - 7);
+      document.getElementById('history-from').value = weekAgo.toISOString().slice(0, 16);
+      document.getElementById('history-to').value = now.toISOString().slice(0, 16);
+      state.from = weekAgo;
+      state.to = now;
+    }
+    if (canFetch()) fetchHistory();
+  }
+
+  function onCustomDatesChange() {
+    const fromStr = document.getElementById('history-from').value;
+    const toStr = document.getElementById('history-to').value;
+    state.from = fromStr ? new Date(fromStr) : null;
+    state.to = toStr ? new Date(toStr) : null;
+    if (canFetch()) fetchHistory();
+  }
+
+  function init() {
+    document.getElementById('history-node').addEventListener('change', onNodeChange);
+    document.getElementById('history-sensor').addEventListener('change', onSensorChange);
+    document.querySelectorAll('.history-range-btn').forEach(btn => {
+      btn.addEventListener('click', () => onRangeClick(btn));
+    });
+    document.getElementById('history-from').addEventListener('change', onCustomDatesChange);
+    document.getElementById('history-to').addEventListener('change', onCustomDatesChange);
+
+    document.querySelector('.history-range-btn[data-range="1D"]').classList.add('active');
+    state.range = '1D';
+
+    loadNodes().then(() => loadSensors());
+
+    window.addEventListener('beforeunload', clearRefreshTimer);
+    document.getElementById('history-node').addEventListener('change', function() {
+      if (currentNodeId !== state.nodeId) clearRefreshTimer();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
