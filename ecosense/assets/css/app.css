@@ -102,6 +102,9 @@
 /* Make LiveView wrapper divs transparent for layout */
 [data-phx-session], [data-phx-teleported-src] { display: contents }
 
+/* Scroll suave al hacer clic en enlaces con ancla (#manage, etc.) */
+html { scroll-behavior: smooth; }
+
 /* ============================================
    ECOSENSE - Paleta de colores (regla 60-30-10)
    https://fonts.google.com/icons para iconos
@@ -185,6 +188,15 @@
   left: 36px;
   transform: translate(0, 0) scale(0.7);
   z-index: 150;
+}
+
+/* Cards con hover suave */
+.ecosense-card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.ecosense-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 70px rgba(30, 81, 89, 0.18) !important;
 }
 
 /* Google Material Symbols */

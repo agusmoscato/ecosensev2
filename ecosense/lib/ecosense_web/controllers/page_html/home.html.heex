@@ -162,25 +162,16 @@
   ">
 
       <h1 style="font-size: 32px; font-weight: 700; margin-top: 180px; margin-bottom: 16px; line-height: 1.2;">
-        Plataforma de monitoreo ambiental profesional
+        Plataforma de monitoreo ambiental en tiempo real
       </h1>
-      <p style="
-        display: inline-block;
-        background: rgba(30,81,89,0.06);
-        padding: 8px 18px;
-        border-radius: 999px;
-        font-size: 14px;
-        margin-bottom: 24px;
-      ">
-        Ecosense integra dispositivos IoT, nodos y sensores en un solo panel.
-      </p>
+    
       <p style="max-width: 650px; margin: auto; font-size: 16px; opacity: 0.9; margin-bottom: 32px;">
-        Visualizá en tiempo real el estado de tus instalaciones, configurá nodos y sensores,
-        y toma decisiones con datos confiables.
+        Controlá en tiempo real el comportamiento de tus sensores y mantené una visión clara del estado de cada punto de monitoreo.
+Gestioná la infraestructura, analizá tendencias y tomá decisiones respaldadas por datos reales.
       </p>
 
       <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 8px;">
-        <a href={~p"/manage"} style="
+        <a href={~p"/dashboard"} style="
           background: var(--ecosense-tertiary);
           color: var(--ecosense-secondary);
           padding: 14px 28px;
@@ -193,10 +184,10 @@
           align-items: center;
           gap: 8px;
         ">
-          <span class="material-symbols-outlined">rocket_launch</span>
-          Comenzar
+          <span class="material-symbols-outlined">monitoring</span>
+          Dashboard
         </a>
-        <a href={~p"/dashboard"} style="
+        <a href="#manage" style="
           border: 2px solid rgba(30,81,89,0.25);
           padding: 14px 28px;
           border-radius: 14px;
@@ -207,14 +198,14 @@
           gap: 8px;
           transition: 0.3s;
         ">
-          <span class="material-symbols-outlined">monitoring</span>
-          Dashboard
+          <span class="material-symbols-outlined">rocket_launch</span>
+          Comenzar
         </a>
       
     </div>
   </section>
   <!-- CARDS -->
-  <section style="padding: 100px 40px; background: rgba(255,255,255,0.5);">
+  <section style="padding: 100px 40px; background:rgba(204, 235, 168, 0.5);">
     <div style="
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -222,48 +213,169 @@
       max-width: 1200px;
       margin: auto;
     ">
-      <div style="
+      <div class="ecosense-card-hover" style="
         background: white;
         padding: 40px;
         border-radius: 24px;
         box-shadow: 0 25px 60px rgba(30,81,89,0.12);
-        transition: 0.3s;
       ">
         <span class="material-symbols-outlined" style="font-size: 48px; color: var(--ecosense-primary); margin-bottom: 15px; display: block;">sensors</span>
-        <h3 style="margin-bottom: 10px; color: var(--ecosense-secondary);">Sensores Ilimitados</h3>
-        <p style="color: var(--ecosense-secondary); opacity: 0.8;">Arquitectura escalable preparada para miles de nodos.</p>
+        <h3 style="margin-bottom: 10px;font-weight: 600;font-size: 20px; color: var(--ecosense-secondary);">Red de nodos y sensores</h3>
+        <p style="color: var(--ecosense-secondary); opacity: 0.8;">Arquitectura escalable, preparada para gestionar múltiples nodos ubicados en distintas zonas.
+El sistema recibe y organiza grandes volúmenes de datos, garantizando un funcionamiento estable incluso cuando varios dispositivos reportan de manera simultánea.</p>
       </div>
-      <div style="
+      <div class="ecosense-card-hover" style="
         background: white;
         padding: 40px;
         border-radius: 24px;
         box-shadow: 0 25px 60px rgba(30,81,89,0.12);
       ">
         <span class="material-symbols-outlined" style="font-size: 48px; color: var(--ecosense-primary); margin-bottom: 15px; display: block;">analytics</span>
-        <h3 style="margin-bottom: 10px; color: var(--ecosense-secondary);">Datos en Tiempo Real</h3>
-        <p style="color: var(--ecosense-secondary); opacity: 0.8;">Procesamiento en vivo con métricas inteligentes.</p>
+        <h3 style="margin-bottom: 10px; font-weight: 600;font-size: 20px; color: var(--ecosense-secondary);">Monitoreo y trazabilidad en tiempo real</h3>
+        <p style="color: var(--ecosense-secondary); opacity: 0.8;">Visualización actualizada de las mediciones y del estado de cada nodo y sensor.
+La plataforma registra la última actividad de cada dispositivo, facilitando la detección de interrupciones o fallas en la recolección de datos.</p>
       </div>
-      <div style="
+      <div class="ecosense-card-hover" style="
         background: white;
         padding: 40px;
         border-radius: 24px;
         box-shadow: 0 25px 60px rgba(30,81,89,0.12);
       ">
         <span class="material-symbols-outlined" style="font-size: 48px; color: var(--ecosense-primary); margin-bottom: 15px; display: block;">shield_lock</span>
-        <h3 style="margin-bottom: 10px; color: var(--ecosense-secondary);">Seguridad Empresarial</h3>
-        <p style="color: var(--ecosense-secondary); opacity: 0.8;">Infraestructura protegida bajo estándares modernos.</p>
+        <h3 style="margin-bottom: 10px;font-weight: 600;font-size: 20px; color: var(--ecosense-secondary);">Protección e integridad de la información</h3>
+        <p style="color: var(--ecosense-secondary); opacity: 0.8;">Solo dispositivos autorizados pueden enviar datos al sistema.
+Cada registro es validado antes de almacenarse, garantizando información confiable y consistente para su análisis posterior.</p>
       </div>
     </div>
   </section>
-  <!-- CTA FINAL -->
+  
+<section id="manage" style="
+  padding: 100px 40px;
+  background: linear-gradient(160deg, #e1f1f8 0%, #f0f8fc 50%, #e8f5f9 100%);
+  scroll-margin-top: 80px;
+">
+  <div style="max-width: 1200px; margin: auto;">
+
+    <!-- Sección 1: Guía rápida (sin caja) -->
+    <div style="margin-bottom: 56px;">
+      <h2 style="
+        margin-bottom: 30px;
+        font-size: 30px;
+        font-weight: 700;
+        color: var(--ecosense-secondary);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      ">
+        <span class="material-symbols-outlined" style="font-size: 40px; color: var(--ecosense-primary);">rocket_launch</span>
+        Guía rápida
+      </h2>
+
+      <ol style="color: var(--ecosense-secondary); line-height: 2; opacity: 0.95; padding-left: 24px; margin: 0; font-size: 18px;">
+        <li><strong>Crea un nodo:</strong> Definí un punto de monitoreo con ubicación específica.</li>
+        <li><strong>Añadí sensores:</strong> Asigná temperatura, humedad, CO₂ y más a cada nodo.</li>
+        <li><strong>Monitoreá en vivo:</strong> El dashboard captura automáticamente las lecturas.</li>
+        <li><strong>Analizá tendencias:</strong> Visualizá gráficos y tomá decisiones basadas en datos.</li>
+      </ol>
+
+    </div>
+
+    <!-- Sección 2: Cards de gestión -->
+    <div style="
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+    ">
+      <a
+        href={~p"/manage/nodes"}
+        class="ecosense-card-hover"
+        style="
+          text-decoration: none;
+          background: white;
+          padding: 40px;
+          border-radius: 24px;
+          box-shadow: 0 25px 60px rgba(30,81,89,0.12);
+          display: block;
+        "
+      >
+        <span class="material-symbols-outlined" style="font-size: 48px; color: var(--ecosense-primary); margin-bottom: 20px; display: block;">hub</span>
+        <h3 style="margin-bottom: 10px; font-weight: 600; font-size: 20px; color: var(--ecosense-secondary);">Gestionar nodos</h3>
+        <p style="color: var(--ecosense-secondary); opacity: 0.8; margin-bottom: 16px;">Administrá dispositivos de monitoreo ambiental distribuidos.</p>
+        <span style="display: inline-flex; align-items: center; gap: 6px; color: var(--ecosense-positive); font-weight: 600; font-size: 14px;">
+          Crear nodo
+          <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+        </span>
+      </a>
+
+      <a
+        href={~p"/manage/sensors"}
+        class="ecosense-card-hover"
+        style="
+          text-decoration: none;
+          background: white;
+          padding: 40px;
+          border-radius: 24px;
+          box-shadow: 0 25px 60px rgba(30,81,89,0.12);
+          display: block;
+        "
+      >
+        <span class="material-symbols-outlined" style="font-size: 48px; color: var(--ecosense-primary); margin-bottom: 20px; display: block;">sensors</span>
+        <h3 style="margin-bottom: 10px; font-weight: 600; font-size: 20px; color: var(--ecosense-secondary);">Gestionar sensores</h3>
+        <p style="color: var(--ecosense-secondary); opacity: 0.8; margin-bottom: 16px;">Configurá sensores de temperatura, humedad, CO₂ y más.</p>
+        <span style="display: inline-flex; align-items: center; gap: 6px; color: var(--ecosense-positive); font-weight: 600; font-size: 14px;">
+          Configurar
+          <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+        </span>
+      </a>
+
+      <a
+        href={~p"/dashboard"}
+        class="ecosense-card-hover"
+        style="
+          text-decoration: none;
+          background: white;
+          padding: 40px;
+          border-radius: 24px;
+          box-shadow: 0 25px 60px rgba(30,81,89,0.12);
+          display: block;
+        "
+      >
+        <span class="material-symbols-outlined" style="font-size: 48px; color: var(--ecosense-primary); margin-bottom: 20px; display: block;">analytics</span>
+        <h3 style="margin-bottom: 10px; font-weight: 600; font-size: 20px; color: var(--ecosense-secondary);">Ver registros</h3>
+        <p style="color: var(--ecosense-secondary); opacity: 0.8; margin-bottom: 16px;">Visualizá métricas en tiempo real y análisis avanzados.</p>
+        <span style="display: inline-flex; align-items: center; gap: 6px; color: var(--ecosense-secondary); font-weight: 600; font-size: 14px;">
+          Ir al dashboard
+          <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
   <section style="
-    padding: 100px 20px;
-    text-align: center;
+    padding: 100px 40px;
     background: linear-gradient(135deg, var(--ecosense-secondary) 0%, var(--ecosense-primary) 100%);
     color: white;
   ">
-    <h2 style="font-size: 36px; margin-bottom: 30px;">Empieza a monitorear hoy</h2>
-    <a href={~p"/manage"} style="
+  <div style="max-width: 1200px; margin: auto;">
+    <h2 style="
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    ">
+      <span class="material-symbols-outlined" style="font-size: 36px; color: var(--ecosense-primary-light);">info</span>
+      Sobre el proyecto
+    </h2>
+    <p style="margin-bottom: 20px;">EcoSense fue desarrollado como trabajo práctico integrador de la asignatura Programación Declarativa.
+A partir de la elección del paradigma funcional, el objetivo fue diseñar un sistema capaz de unificar, validar y procesar grandes volúmenes de datos provenientes de sensores y registros manuales, garantizando estabilidad y trazabilidad.</p>
+    <p style="margin-bottom: 20px;">El proyecto surge de la necesidad de contar con herramientas accesibles para la investigación ambiental, permitiendo analizar microclimas, variables productivas o cualquier tipo de medición censada, sin limitar la incorporación de nuevos sensores o fuentes de información.</p>
+    <p style="margin-top: 20px; margin-bottom: 50px;">La arquitectura fue pensada para recibir múltiples registros simultáneamente y procesarlos de forma ordenada, evitando la sobrecarga del sistema y asegurando la integridad de los datos almacenados.</p>
+
+<div style="text-align: center; margin-top: 24px;">
+    <a href="/documents/EcoSense_Informe_Preliminar.pdf" download="EcoSense_Informe_Preliminar.pdf" style="
       background: var(--ecosense-tertiary);
       color: var(--ecosense-secondary);
       padding: 16px 32px;
@@ -274,15 +386,39 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-    ">
-      <span class="material-symbols-outlined">eco</span>
-      Acceder al Panel
+      transition: transform 0.2s, box-shadow 0.2s;
+    " onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 24px 56px rgba(0,0,0,0.25)';" onmouseout="this.style.transform=''; this.style.boxShadow='0 20px 50px rgba(0,0,0,0.2)';">
+      <span class="material-symbols-outlined">download</span>
+      Descargar informe completo del proyecto
     </a>
+    </div></div>
   </section>
   <!-- FOOTER -->
-  <div style="text-align: center; padding: 30px; font-size: 13px; color: var(--ecosense-secondary); background: white; opacity: 0.9;">
-    © 2026 ECOSENSE — Plataforma Profesional de Monitoreo Ambiental
-  </div>
+  <div style="text-align: center; padding: 60px; font-size: 20px; color: var(--ecosense-secondary); background: white; opacity: 0.9;">
+  <span class="material-symbols-outlined">Deceased</span>
+  <span class="material-symbols-outlined">Deceased</span>
+  <span class="material-symbols-outlined">Deceased</span>
+  <span class="material-symbols-outlined">Deceased</span>
+  <span class="material-symbols-outlined">Deceased</span>
+  - Programación Declarativa -
+  <a href="https://www.linkedin.com/in/agustinmoscato/" target="_blank" rel="noopener noreferrer" style="color: var(--ecosense-secondary); text-decoration: underline;">
+    Agustín Moscato
+  </a>
+  -
+  <a href="https://www.linkedin.com/in/katherineluzmolinategaldi/" target="_blank" rel="noopener noreferrer" style="color: var(--ecosense-secondary); text-decoration: underline;">
+    Katherine Molina
+  </a>
+   - 
+  <span class="material-symbols-outlined">Deceased</span>
+  <span class="material-symbols-outlined">Deceased</span>
+  <span class="material-symbols-outlined">Deceased</span>
+  <span class="material-symbols-outlined">Deceased</span>
+  <span class="material-symbols-outlined">Deceased</span>
+  
+  
+  
+</div>
+
 </div>
 
 <script>
