@@ -49,6 +49,7 @@ defmodule EcosenseWeb.Router do
     pipe_through :api
 
     get "/dashboard", DashboardApiController, :show
+    get "/dashboard/history", DashboardHistoryApiController, :show
     get "/stats", StatsController, :index
 
     # Lecturas: solo GET, show, update, delete. Para CREAR desde dispositivos usar POST /api/devices/readings (requiere x-api-key)
